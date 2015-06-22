@@ -48,7 +48,7 @@ class ArrayLoader implements ILoader
 
 		/** @var Entities\IPackage $package */
 		$package = new $class($config['name'], $config['version']);
-		$package->setType($config['type']);
+		$package->setType($config['package']);
 
 		if (!empty($config['title']) && is_string($config['title'])) {
 			$package->setTitle($config['title']);
