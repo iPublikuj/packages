@@ -50,32 +50,32 @@ class ArrayLoader implements ILoader
 		$package = new $class($config['name'], $config['version']);
 		$package->setType($config['package']);
 
-		if ($this->checkStringConfig($config['title']) !== FALSE) {
-			$package->setTitle($config['title']);
+		if ($value = $this->checkStringConfig($config, 'title') AND $value !== FALSE) {
+			$package->setTitle($value);
 		}
 
-		if ($this->checkStringConfig($config['description']) !== FALSE) {
-			$package->setDescription($config['description']);
+		if ($value = $this->checkStringConfig($config, 'description') AND $value !== FALSE) {
+			$package->setDescription($value);
 		}
 
-		if ($this->checkArrayConfig($config['keywords']) !== FALSE) {
+		if ($value = $this->checkArrayConfig($config, 'keywords') AND $value !== FALSE) {
 			$package->setKeywords($config['keywords']);
 		}
 
-		if ($this->checkStringConfig($config['homepage']) !== FALSE) {
-			$package->setHomepage($config['homepage']);
+		if ($value = $this->checkStringConfig($config, 'homepage') AND $value !== FALSE) {
+			$package->setHomepage($value);
 		}
 
 		if (!empty($config['license'])) {
 			$package->setLicense(is_array($config['license']) ? $config['license'] : [$config['license']]);
 		}
 
-		if ($this->checkArrayConfig($config['authors']) !== FALSE) {
-			$package->setAuthors($config['authors']);
+		if ($value = $this->checkArrayConfig($config, 'authors') AND $value !== FALSE) {
+			$package->setAuthors($value);
 		}
 
-		if ($this->checkArrayConfig($config['extra']) !== FALSE) {
-			$package->setExtra($config['extra']);
+		if ($value = $this->checkArrayConfig($config, 'extra') AND $value !== FALSE) {
+			$package->setExtra($value);
 		}
 
 		if (!empty($config['time'])) {
@@ -86,53 +86,55 @@ class ArrayLoader implements ILoader
 			}
 		}
 
-		if (isset($config['source'])) {
-			if (!isset($config['source']['type']) || !isset($config['source']['url'])) {
-				throw new Exceptions\UnexpectedValueException(sprintf("Package source should be specified as {\"type\": ..., \"url\": ...},\n%s given", json_encode($config['source'])));
+		if (isset($config['source']) && $source = $config['source']) {
+			if (!isset($source['type']) || !isset($source['url'])) {
+				throw new Exceptions\UnexpectedValueException(sprintf("Package source should be specified as {\"type\": ..., \"url\": ...},\n%s given", json_encode($source)));
 			}
 
-			$package->setSourceType($config['source']['type']);
-			$package->setSourceUrl($config['source']['url']);
+			$package->setSourceType($source['type']);
+			$package->setSourceUrl($source['url']);
 		}
 
-		if (isset($config['dist'])) {
-			if (!isset($config['dist']['type']) || !isset($config['dist']['url'])) {
-				throw new Exceptions\UnexpectedValueException(sprintf("Package dist should be specified as {\"type\": ..., \"url\": ...},\n%s given", json_encode($config['dist'])));
+		if (isset($config['dist']) && $dist = $config['dist']) {
+			if (!isset($dist['type']) || !isset($dist['url'])) {
+				throw new Exceptions\UnexpectedValueException(sprintf("Package dist should be specified as {\"type\": ..., \"url\": ...},\n%s given", json_encode($dist)));
 			}
 
-			$package->setDistType($config['dist']['type']);
-			$package->setDistUrl($config['dist']['url']);
-			$package->setDistSha1Checksum(isset($config['dist']['shasum']) ? $config['dist']['shasum'] : NULL);
+			$package->setDistType($dist['type']);
+			$package->setDistUrl($dist['url']);
+			$package->setDistSha1Checksum(isset($dist['shasum']) ? $dist['shasum'] : NULL);
 		}
 
-		if ($this->checkArrayConfig($config['autoload']) !== FALSE) {
-			$package->setAutoload($config['autoload']);
+		if ($value = $this->checkArrayConfig($config, 'autoload') AND $value !== FALSE) {
+			$package->setAutoload($value);
 		}
 
-		if ($this->checkArrayConfig($config['resources']) !== FALSE) {
-			$package->setResources($config['resources']);
+		if ($value = $this->checkArrayConfig($config, 'resources') AND $value !== FALSE) {
+			$package->setResources($value);
 		}
 
 		return $package;
 	}
 
 	/**
-	 * @param string $value
+	 * @param array $config
+	 * @param string $key
 	 *
 	 * @return string|FALSE
 	 */
-	protected function checkStringConfig($value)
+	protected function checkStringConfig(array $config, $key)
 	{
-		return (!empty($value) && is_string($value)) ? $value : FALSE;
+		return (isset($config[$key]) && !empty($config[$key]) && is_string($config[$key])) ? $config[$key] : FALSE;
 	}
 
 	/**
-	 * @param string $value
+	 * @param array $config
+	 * @param string $key
 	 *
 	 * @return array|FALSE
 	 */
-	protected function checkArrayConfig($value)
+	protected function checkArrayConfig(array $config, $key)
 	{
-		return (!empty($value) && is_array($value)) ? $value : FALSE;
+		return (isset($config[$key]) && !empty($config[$key]) && is_array($config[$key])) ? $config[$key] : FALSE;
 	}
 }
