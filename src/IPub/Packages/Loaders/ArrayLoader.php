@@ -81,7 +81,9 @@ class ArrayLoader implements ILoader
 		if (!empty($config['time'])) {
 			try {
 				$package->setReleaseDate(new Utils\DateTime($config['time'], new \DateTimeZone('UTC')));
-			} catch (\Exception $ex) {}
+			} catch (\Exception $ex) {
+				// If date could not be converted to object than is in wrong format and is not added to package
+			}
 		}
 
 		if (isset($config['source'])) {
