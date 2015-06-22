@@ -199,15 +199,7 @@ class Package extends Nette\Object implements IPackage
 	 */
 	public function setKeywords($keywords)
 	{
-		if (is_array($keywords)) {
-			$this->keywords = Utils\ArrayHash::from($keywords);
-
-		} else if ($keywords instanceof Utils\ArrayHash) {
-			$this->keywords = $keywords;
-
-		} else {
-			throw new Exceptions\InvalidArgumentException('Invalid keywords given');
-		}
+		$this->keywords = $this->checkForArray($keywords);
 
 		return $this;
 	}
@@ -243,15 +235,7 @@ class Package extends Nette\Object implements IPackage
 	 */
 	public function setLicense($license)
 	{
-		if (is_array($license)) {
-			$this->license = Utils\ArrayHash::from($license);
-
-		} else if ($license instanceof Utils\ArrayHash) {
-			$this->license = $license;
-
-		} else {
-			throw new Exceptions\InvalidArgumentException('Invalid license given');
-		}
+		$this->license = $this->checkForArray($license);
 
 		return $this;
 	}
@@ -269,15 +253,7 @@ class Package extends Nette\Object implements IPackage
 	 */
 	public function setAuthors($authors)
 	{
-		if (is_array($authors)) {
-			$this->authors = Utils\ArrayHash::from($authors);
-
-		} else if ($authors instanceof Utils\ArrayHash) {
-			$this->authors = $authors;
-
-		} else {
-			throw new Exceptions\InvalidArgumentException('Invalid authors given');
-		}
+		$this->authors = $this->checkForArray($authors);
 
 		return $this;
 	}
@@ -311,15 +287,7 @@ class Package extends Nette\Object implements IPackage
 	 */
 	public function setExtra($extra)
 	{
-		if (is_array($extra)) {
-			$this->extra = Utils\ArrayHash::from($extra);
-
-		} else if ($extra instanceof Utils\ArrayHash) {
-			$this->extra = $extra;
-
-		} else {
-			throw new Exceptions\InvalidArgumentException('Invalid extra given');
-		}
+		$this->extra = $this->checkForArray($extra);
 
 		return $this;
 	}
@@ -463,15 +431,7 @@ class Package extends Nette\Object implements IPackage
 	 */
 	public function setAutoload($autoload)
 	{
-		if (is_array($autoload)) {
-			$this->autoload = Utils\ArrayHash::from($autoload);
-
-		} else if ($autoload instanceof Utils\ArrayHash) {
-			$this->autoload = $autoload;
-
-		} else {
-			throw new Exceptions\InvalidArgumentException('Invalid autoload given');
-		}
+		$this->autoload = $this->checkForArray($autoload);
 
 		return $this;
 	}
@@ -489,15 +449,7 @@ class Package extends Nette\Object implements IPackage
 	 */
 	public function setResources($resources)
 	{
-		if (is_array($resources)) {
-			$this->resources = Utils\ArrayHash::from($resources);
-
-		} else if ($resources instanceof Utils\ArrayHash) {
-			$this->resources = $resources;
-
-		} else {
-			throw new Exceptions\InvalidArgumentException('Invalid resources given');
-		}
+		$this->resources = $this->checkForArray($resources);
 
 		return $this;
 	}
@@ -533,5 +485,25 @@ class Package extends Nette\Object implements IPackage
 	public function __toString()
 	{
 		return $this->getUniqueName();
+	}
+
+	/**
+	 * @param array|Utils\ArrayHash $value
+	 *
+	 * @return Utils\ArrayHash
+	 *
+	 * @throws Exceptions\InvalidArgumentException
+	 */
+	protected function checkForArray($value)
+	{
+		if (is_array($value)) {
+			return Utils\ArrayHash::from($value);
+
+		} else if ($value instanceof Utils\ArrayHash) {
+			return $value;
+
+		} else {
+			throw new Exceptions\InvalidArgumentException('Invalid value given. Only array or instance of \Nette\Utils\ArrayHash are allowed.');
+		}
 	}
 }
