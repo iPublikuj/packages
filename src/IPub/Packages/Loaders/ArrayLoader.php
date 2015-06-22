@@ -50,19 +50,19 @@ class ArrayLoader implements ILoader
 		$package = new $class($config['name'], $config['version']);
 		$package->setType($config['package']);
 
-		if (!empty($config['title']) && is_string($config['title'])) {
+		if ($this->checkStringConfig($config['title'])) {
 			$package->setTitle($config['title']);
 		}
 
-		if (!empty($config['description']) && is_string($config['description'])) {
+		if ($this->checkStringConfig($config['description'])) {
 			$package->setDescription($config['description']);
 		}
 
-		if (!empty($config['keywords']) && is_array($config['keywords'])) {
+		if ($this->checkArrayConfig($config['keywords'])) {
 			$package->setKeywords($config['keywords']);
 		}
 
-		if (!empty($config['homepage']) && is_string($config['homepage'])) {
+		if ($this->checkStringConfig($config['homepage'])) {
 			$package->setHomepage($config['homepage']);
 		}
 
@@ -70,11 +70,11 @@ class ArrayLoader implements ILoader
 			$package->setLicense(is_array($config['license']) ? $config['license'] : [$config['license']]);
 		}
 
-		if (!empty($config['authors']) && is_array($config['authors'])) {
+		if ($this->checkArrayConfig($config['authors'])) {
 			$package->setAuthors($config['authors']);
 		}
 
-		if (isset($config['extra']) && is_array($config['extra'])) {
+		if ($this->checkArrayConfig($config['extra'])) {
 			$package->setExtra($config['extra']);
 		}
 
@@ -103,14 +103,34 @@ class ArrayLoader implements ILoader
 			$package->setDistSha1Checksum(isset($config['dist']['shasum']) ? $config['dist']['shasum'] : NULL);
 		}
 
-		if (!empty($config['autoload']) && is_array($config['autoload'])) {
+		if ($this->checkArrayConfig($config['autoload'])) {
 			$package->setAutoload($config['autoload']);
 		}
 
-		if (!empty($config['resources']) && is_array($config['resources'])) {
+		if ($this->checkArrayConfig($config['resources'])) {
 			$package->setResources($config['resources']);
 		}
 
 		return $package;
+	}
+
+	/**
+	 * @param string $value
+	 *
+	 * @return bool|string
+	 */
+	protected function checkStringConfig($value)
+	{
+		return (!empty($value) && is_string($value)) ? $value : FALSE;
+	}
+
+	/**
+	 * @param string $value
+	 *
+	 * @return bool|string
+	 */
+	protected function checkArrayConfig($value)
+	{
+		return (!empty($value) && is_array($value)) ? $value : FALSE;
 	}
 }
