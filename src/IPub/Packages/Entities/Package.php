@@ -101,12 +101,12 @@ class Package extends Nette\Object implements IPackage
 	];
 
 	/**
-	 * @var array
+	 * @var Utils\ArrayHash
 	 */
 	protected $autoload = [];
 
 	/**
-	 * @var array
+	 * @var Utils\ArrayHash
 	 */
 	protected $resources = [];
 
