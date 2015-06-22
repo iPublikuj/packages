@@ -34,7 +34,7 @@ interface IRepository extends \Countable
 	 * @param  string $name
 	 * @param  string $version
 	 *
-	 * @return Entities\IPackage|NULL
+	 * @return Entities\IPackage|FALSE
 	 */
 	public function findPackage($name, $version = 'latest');
 

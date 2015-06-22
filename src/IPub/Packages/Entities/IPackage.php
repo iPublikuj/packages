@@ -70,14 +70,16 @@ interface IPackage
 	public function getDescription();
 
 	/**
-	 * @param array $keywords
+	 * @param array|Utils\ArrayHash $keywords
 	 *
 	 * @return $this
+	 *
+	 * @throws Exceptions\InvalidArgumentException
 	 */
-	public function setKeywords(array $keywords);
+	public function setKeywords($keywords);
 
 	/**
-	 * @return array
+	 * @return Utils\ArrayHash
 	 */
 	public function getKeywords();
 
@@ -94,43 +96,49 @@ interface IPackage
 	public function getHomepage();
 
 	/**
-	 * @param array $license
+	 * @param array|Utils\ArrayHash $license
 	 *
 	 * @return $this
+	 *
+	 * @throws Exceptions\InvalidArgumentException
 	 */
-	public function setLicense(array $license);
+	public function setLicense($license);
 
 	/**
-	 * @return array
+	 * @return Utils\ArrayHash
 	 */
 	public function getLicense();
 
 	/**
-	 * @param array $authors
+	 * @param array|Utils\ArrayHash $authors
 	 *
 	 * @return $this
+	 *
+	 * @throws Exceptions\InvalidArgumentException
 	 */
-	public function setAuthors(array $authors);
+	public function setAuthors($authors);
 
 	/**
-	 * @return string
+	 * @return string|FALSE
 	 */
 	public function getAuthor();
 
 	/**
-	 * @return array
+	 * @return Utils\ArrayHash
 	 */
 	public function getAuthors();
 
 	/**
-	 * @param array $extra
+	 * @param array|Utils\ArrayHash $extra
 	 *
 	 * @return $this
+	 *
+	 * @throws Exceptions\InvalidArgumentException
 	 */
-	public function setExtra(array $extra);
+	public function setExtra($extra);
 
 	/**
-	 * @return array
+	 * @return Utils\ArrayHash
 	 */
 	public function getExtra();
 
@@ -150,6 +158,8 @@ interface IPackage
 	 * Sets source from which this package was installed (source/dist).
 	 *
 	 * @param string $type
+	 *
+	 * @return $this
 	 */
 	public function setInstallationSource($type);
 
@@ -223,28 +233,36 @@ interface IPackage
 	/**
 	 * Set the autoload namespace => directory mapping
 	 *
-	 * @param array $autoload
+	 * @param array|Utils\ArrayHash $autoload
+	 *
+	 * @return $this
+	 *
+	 * @throws Exceptions\InvalidArgumentException
 	 */
-	public function setAutoload(array $autoload);
+	public function setAutoload($autoload);
 
 	/**
 	 * Returns the autoload namespace => directory mapping
 	 *
-	 * @return array
+	 * @return Utils\ArrayHash
 	 */
 	public function getAutoload();
 
 	/**
 	 * Set the resources scheme => path(s)
 	 *
-	 * @param array $resources
+	 * @param array|Utils\ArrayHash $resources
+	 *
+	 * @return $this
+	 *
+	 * @throws Exceptions\InvalidArgumentException
 	 */
-	public function setResources(array $resources = []);
+	public function setResources($resources);
 
 	/**
 	 * Returns the resources scheme => path(s)
 	 *
-	 * @return array
+	 * @return Utils\ArrayHash
 	 */
 	public function getResources();
 
