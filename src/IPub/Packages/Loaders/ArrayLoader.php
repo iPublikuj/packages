@@ -50,19 +50,19 @@ class ArrayLoader implements ILoader
 		$package = new $class($config['name'], $config['version']);
 		$package->setType($config['package']);
 
-		if ($this->checkStringConfig($config['title'])) {
+		if ($this->checkStringConfig($config['title']) !== FALSE) {
 			$package->setTitle($config['title']);
 		}
 
-		if ($this->checkStringConfig($config['description'])) {
+		if ($this->checkStringConfig($config['description']) !== FALSE) {
 			$package->setDescription($config['description']);
 		}
 
-		if ($this->checkArrayConfig($config['keywords'])) {
+		if ($this->checkArrayConfig($config['keywords']) !== FALSE) {
 			$package->setKeywords($config['keywords']);
 		}
 
-		if ($this->checkStringConfig($config['homepage'])) {
+		if ($this->checkStringConfig($config['homepage']) !== FALSE) {
 			$package->setHomepage($config['homepage']);
 		}
 
@@ -70,11 +70,11 @@ class ArrayLoader implements ILoader
 			$package->setLicense(is_array($config['license']) ? $config['license'] : [$config['license']]);
 		}
 
-		if ($this->checkArrayConfig($config['authors'])) {
+		if ($this->checkArrayConfig($config['authors']) !== FALSE) {
 			$package->setAuthors($config['authors']);
 		}
 
-		if ($this->checkArrayConfig($config['extra'])) {
+		if ($this->checkArrayConfig($config['extra']) !== FALSE) {
 			$package->setExtra($config['extra']);
 		}
 
@@ -103,11 +103,11 @@ class ArrayLoader implements ILoader
 			$package->setDistSha1Checksum(isset($config['dist']['shasum']) ? $config['dist']['shasum'] : NULL);
 		}
 
-		if ($this->checkArrayConfig($config['autoload'])) {
+		if ($this->checkArrayConfig($config['autoload']) !== FALSE) {
 			$package->setAutoload($config['autoload']);
 		}
 
-		if ($this->checkArrayConfig($config['resources'])) {
+		if ($this->checkArrayConfig($config['resources']) !== FALSE) {
 			$package->setResources($config['resources']);
 		}
 
@@ -117,7 +117,7 @@ class ArrayLoader implements ILoader
 	/**
 	 * @param string $value
 	 *
-	 * @return bool|string
+	 * @return string|FALSE
 	 */
 	protected function checkStringConfig($value)
 	{
@@ -127,7 +127,7 @@ class ArrayLoader implements ILoader
 	/**
 	 * @param string $value
 	 *
-	 * @return bool|string
+	 * @return array|FALSE
 	 */
 	protected function checkArrayConfig($value)
 	{

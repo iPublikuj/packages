@@ -117,11 +117,11 @@ class Package extends Nette\Object implements IPackage
 	public function __construct($name, $version)
 	{
 		// Package name
-		$this->name		= strtolower($name);
+		$this->name = strtolower($name);
 		// Package default title
-		$this->title	= $this->name;
+		$this->title = $this->name;
 		// Package version
-		$this->version	= $version;
+		$this->version = $version;
 	}
 
 	/**
