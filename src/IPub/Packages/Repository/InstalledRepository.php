@@ -2,14 +2,14 @@
 /**
  * InstalledRepository.php
  *
- * @copyright	More in license.md
- * @license		http://www.ipublikuj.eu
- * @author		Adam Kadlec http://www.ipublikuj.eu
- * @package		iPublikuj:Packages!
- * @subpackage	Repository
- * @since		5.0
+ * @copyright      More in license.md
+ * @license        http://www.ipublikuj.eu
+ * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @package        iPublikuj:Packages!
+ * @subpackage     Repository
+ * @since          1.0.0
  *
- * @date		30.05.15
+ * @date           30.05.15
  */
 
 namespace IPub\Packages\Repository;
@@ -17,6 +17,14 @@ namespace IPub\Packages\Repository;
 use IPub;
 use IPub\Packages\Entities;
 
+/**
+ * Installed packages repository
+ *
+ * @package        iPublikuj:Packages!
+ * @subpackage     Repository
+ *
+ * @author         Adam Kadlec <adam.kadlec@fastybird.com>
+ */
 class InstalledRepository extends ArrayRepository implements IInstalledRepository
 {
 	/**
@@ -26,18 +34,17 @@ class InstalledRepository extends ArrayRepository implements IInstalledRepositor
 
 	/**
 	 * @param string $path
+	 * @param array $packages
 	 */
-	public function __construct($path)
+	public function __construct($path, array $packages = [])
 	{
-		parent::__construct();
+		parent::__construct($packages);
 
-		$this->path = rtrim($path, '\/');
+		$this->path = rtrim($path, DIRECTORY_SEPARATOR);
 	}
 
 	/**
-	 * Get the repository path
-	 *
-	 * return string
+	 * {@inheritdoc}
 	 */
 	public function getPath()
 	{
@@ -49,6 +56,6 @@ class InstalledRepository extends ArrayRepository implements IInstalledRepositor
 	 */
 	public function getInstallPath(Entities\IPackage $package)
 	{
-		return $this->path.'/'.$package->getName();
+		return $this->path . DIRECTORY_SEPARATOR . $package->getName();
 	}
 }

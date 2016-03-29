@@ -2,14 +2,14 @@
 /**
  * PackageInstaller.php
  *
- * @copyright	More in license.md
- * @license		http://www.ipublikuj.eu
- * @author		Adam Kadlec http://www.ipublikuj.eu
- * @package		iPublikuj:Packages!
- * @subpackage	Installers
- * @since		5.0
+ * @copyright      More in license.md
+ * @license        http://www.ipublikuj.eu
+ * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @package        iPublikuj:Packages!
+ * @subpackage     Installers
+ * @since          1.0.0
  *
- * @date		30.05.15
+ * @date           30.05.15
  */
 
 namespace IPub\Packages\Installers;
@@ -23,7 +23,15 @@ use IPub\Packages\Exceptions;
 use IPub\Packages\Loaders;
 use IPub\Packages\Repository;
 
-class PackageInstaller implements IInstaller
+/**
+ * Package installer
+ *
+ * @package        iPublikuj:Packages!
+ * @subpackage     Installers
+ *
+ * @author         Adam Kadlec <adam.kadlec@fastybird.com>
+ */
+class PackageInstaller implements IPackageInstaller
 {
 	/**
 	 * @var Repository\IInstalledRepository
@@ -36,13 +44,13 @@ class PackageInstaller implements IInstaller
 	protected $loader;
 
 	/**
-	 * Initializes the installer.
-	 *
 	 * @param Loaders\ILoader $loader
 	 * @param Repository\IInstalledRepository $repository
 	 */
-	public function __construct(Loaders\ILoader $loader = NULL, Repository\IInstalledRepository $repository)
-	{
+	public function __construct(
+		Loaders\ILoader $loader = NULL,
+		Repository\IInstalledRepository $repository
+	) {
 		$this->repository = $repository;
 		$this->loader = $loader ?: new Loaders\JsonLoader;
 	}
@@ -55,7 +63,7 @@ class PackageInstaller implements IInstaller
 		$package = $this->loader->load($packageFile);
 
 		if ($this->repository->hasPackage($package)) {
-			throw new Exceptions\LogicException('Package is already installed: '. $package);
+			throw new Exceptions\LogicException('Package is already installed: ' . $package);
 		}
 
 		Utils\FileSystem::copy(dirname($packageFile), $this->repository->getInstallPath($package));
@@ -70,7 +78,7 @@ class PackageInstaller implements IInstaller
 		$update = $this->loader->load($packageFile);
 
 		if (!$initial = $this->repository->findPackage($update->getName())) {
-			throw new Exceptions\LogicException('Package is not installed: '. $initial);
+			throw new Exceptions\LogicException('Package is not installed: ' . $initial);
 		}
 
 		$installPath = $this->repository->getInstallPath($initial);
@@ -90,7 +98,7 @@ class PackageInstaller implements IInstaller
 	public function uninstall(Entities\IPackage $package)
 	{
 		if (!$this->repository->hasPackage($package)) {
-			throw new Exceptions\LogicException('Package is not installed: '. $package);
+			throw new Exceptions\LogicException('Package is not installed: ' . $package);
 		}
 
 		Utils\FileSystem::delete($this->repository->getInstallPath($package));

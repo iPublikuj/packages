@@ -19,6 +19,14 @@ use IPub\Packages;
 use IPub\Packages\Entities;
 use IPub\Packages\Exceptions;
 
+/**
+ * Package JSON loader
+ *
+ * @package        iPublikuj:Packages!
+ * @subpackage     Loaders
+ *
+ * @author         Adam Kadlec <adam.kadlec@fastybird.com>
+ */
 class JsonLoader extends ArrayLoader
 {
 	/**
@@ -33,10 +41,10 @@ class JsonLoader extends ArrayLoader
 	{
 		$json = (string) $json;
 
-		if (strpos($json, '{') !== FALSE && !file_exists($json)) {
+		if (strpos($json, '{') !== FALSE && !is_file($json)) {
 			$config = json_decode($json, TRUE);
 
-		} else if (file_exists($json)) {
+		} else if (is_file($json)) {
 			$config = json_decode(file_get_contents($json), TRUE);
 		}
 
@@ -44,19 +52,6 @@ class JsonLoader extends ArrayLoader
 			throw new Exceptions\InvalidArgumentException('Unable to load json.');
 		}
 
-		return $this->loadConfig($config, $class);
-	}
-
-	/**
-	 * Create package from array config
-	 *
-	 * @param array $config
-	 * @param string $class
-	 *
-	 * @return Entities\IPackage
-	 */
-	protected function loadConfig(array $config, $class)
-	{
 		return parent::load($config, $class);
 	}
 }

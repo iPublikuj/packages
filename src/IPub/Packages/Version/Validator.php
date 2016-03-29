@@ -2,18 +2,26 @@
 /**
  * Validator.php
  *
- * @copyright	More in license.md
- * @license		http://www.ipublikuj.eu
- * @author		Adam Kadlec http://www.ipublikuj.eu
- * @package		iPublikuj:Packages!
- * @subpackage	Version
- * @since		5.0
+ * @copyright      More in license.md
+ * @license        http://www.ipublikuj.eu
+ * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @package        iPublikuj:Packages!
+ * @subpackage     Version
+ * @since          1.0.0
  *
- * @date		30.09.14
+ * @date           30.09.14
  */
 
 namespace IPub\Packages\Version;
 
+/**
+ * Versions validator helper
+ *
+ * @package        iPublikuj:Packages!
+ * @subpackage     Version
+ *
+ * @author         Adam Kadlec <adam.kadlec@fastybird.com>
+ */
 class Validator
 {
 	/**

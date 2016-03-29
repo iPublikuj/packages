@@ -2,14 +2,14 @@
 /**
  * ArrayRepository.php
  *
- * @copyright	More in license.md
- * @license		http://www.ipublikuj.eu
- * @author		Adam Kadlec http://www.ipublikuj.eu
- * @package		iPublikuj:Packages!
- * @subpackage	Repository
- * @since		5.0
+ * @copyright      More in license.md
+ * @license        http://www.ipublikuj.eu
+ * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @package        iPublikuj:Packages!
+ * @subpackage     Repository
+ * @since          1.0.0
  *
- * @date		30.05.15
+ * @date           30.05.15
  */
 
 namespace IPub\Packages\Repository;
@@ -17,6 +17,14 @@ namespace IPub\Packages\Repository;
 use IPub;
 use IPub\Packages\Entities;
 
+/**
+ * Packages default array repository
+ *
+ * @package        iPublikuj:Packages!
+ * @subpackage     Repository
+ *
+ * @author         Adam Kadlec <adam.kadlec@fastybird.com>
+ */
 class ArrayRepository implements IRepository
 {
 	/**
@@ -42,9 +50,11 @@ class ArrayRepository implements IRepository
 		// normalize name
 		$name = strtolower($name);
 
-		if ($version == 'latest') {
+		if ($version === 'latest') {
 			$packages = $this->findPackages($name);
-			usort($packages, function($a, $b) { return version_compare($a->getVersion(), $b->getVersion()); });
+			usort($packages, function (Entities\Package $a, Entities\Package $b) {
+				return version_compare($a->getVersion(), $b->getVersion());
+			});
 
 			return end($packages);
 
@@ -64,7 +74,7 @@ class ArrayRepository implements IRepository
 		$packages = [];
 
 		foreach ($this->getPackages() as $package) {
-			if ($package->getName() === $name && (NULL === $version || $version === $package->getVersion())) {
+			if ($package->getName() === $name && ($version === NULL || $version === $package->getVersion())) {
 				$packages[] = $package;
 			}
 		}
@@ -93,11 +103,13 @@ class ArrayRepository implements IRepository
 	 */
 	public function addPackage(Entities\IPackage $package)
 	{
-		if (NULL === $this->packages) {
+		if ($this->packages === NULL) {
 			$this->initialize();
 		}
 
 		$this->packages[] = $package;
+
+		return $package;
 	}
 
 	/**
@@ -106,7 +118,7 @@ class ArrayRepository implements IRepository
 	public function filterPackages(callable $callback, $class = 'IPub\Packages\Entities\Package')
 	{
 		foreach ($this->getPackages() as $package) {
-			if (FALSE === call_user_func($callback, $package)) {
+			if (call_user_func($callback, $package) === FALSE) {
 				return FALSE;
 			}
 		}
@@ -135,7 +147,7 @@ class ArrayRepository implements IRepository
 	 */
 	public function getPackages()
 	{
-		if (NULL === $this->packages) {
+		if ($this->packages === NULL) {
 			$this->initialize();
 		}
 

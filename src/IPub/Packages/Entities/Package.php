@@ -2,14 +2,14 @@
 /**
  * Package.php
  *
- * @copyright	More in license.md
- * @license		http://www.ipublikuj.eu
- * @author		Adam Kadlec http://www.ipublikuj.eu
- * @package		iPublikuj:Packages!
- * @subpackage	Entities
- * @since		5.0
+ * @copyright      More in license.md
+ * @license        http://www.ipublikuj.eu
+ * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @package        iPublikuj:Packages!
+ * @subpackage     Entities
+ * @since          1.0.0
  *
- * @date		27.09.14
+ * @date           27.09.14
  */
 
 namespace IPub\Packages\Entities;
@@ -26,89 +26,94 @@ class Package extends Nette\Object implements IPackage
 	/**
 	 * @var string
 	 */
-	protected $name;
+	private $parent;
 
 	/**
 	 * @var string
 	 */
-	protected $version;
+	private $name;
 
 	/**
 	 * @var string
 	 */
-	protected $type;
-
-	/**
-	 * @var string
-	 */
-	protected $title;
-
-	/**
-	 * @var string
-	 */
-	protected $description;
+	private $version;
 
 	/**
 	 * @var Utils\ArrayHash
 	 */
-	protected $keywords = [];
+	private $types;
 
 	/**
 	 * @var string
 	 */
-	protected $homepage;
+	private $title;
+
+	/**
+	 * @var string
+	 */
+	private $description;
 
 	/**
 	 * @var Utils\ArrayHash
 	 */
-	protected $license = [];
+	private $keywords = [];
+
+	/**
+	 * @var string
+	 */
+	private $homepage;
 
 	/**
 	 * @var Utils\ArrayHash
 	 */
-	protected $authors = [];
+	private $license = [];
 
 	/**
 	 * @var Utils\ArrayHash
 	 */
-	protected $extra = [];
+	private $authors = [];
+
+	/**
+	 * @var Utils\ArrayHash
+	 */
+	private $extra = [];
 
 	/**
 	 * @var Utils\DateTime
 	 */
-	protected $releaseDate;
+	private $releaseDate;
 
 	/**
 	 * @var string
 	 */
-	protected $installationSource;
+	private $installationSource;
 
 	/**
 	 * @var array
 	 */
-	protected $source = [
-		'type'	=> NULL,
-		'url'	=> NULL
+	private $source = [
+		'type' => NULL,
+		'url'  => NULL
 	];
 
 	/**
 	 * @var array
 	 */
-	protected $dist = [
-		'type'		=> NULL,
-		'url'		=> NULL,
-		'shasum'	=> NULL
+	private $dist = [
+		'type'   => NULL,
+		'url'    => NULL,
+		'shaSum' => NULL
 	];
 
 	/**
 	 * @var Utils\ArrayHash
 	 */
-	protected $autoload = [];
+	private $autoload = [];
 
 	/**
 	 * @var Utils\ArrayHash
 	 */
-	protected $resources = [];
+	private $resources = [];
 
 	/**
 	 * @param string $name
@@ -116,12 +121,48 @@ class Package extends Nette\Object implements IPackage
 	 */
 	public function __construct($name, $version)
 	{
+		$this->setName($name);
+		$this->setVersion($version);
+
+		$this->types = new Utils\ArrayHash;
+		$this->keywords = new Utils\ArrayHash;
+		$this->license = new Utils\ArrayHash;
+		$this->authors = new Utils\ArrayHash;
+		$this->extra = new Utils\ArrayHash;
+		$this->autoload = new Utils\ArrayHash;
+		$this->resources = new Utils\ArrayHash;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function setParent($parent)
+	{
+		$this->parent = (string) $parent;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getParent()
+	{
+		return $this->parent;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function setName($name)
+	{
+		$name = (string) $name;
+
 		// Package name
 		$this->name = strtolower($name);
-		// Package default title
-		$this->title = $this->name;
-		// Package version
-		$this->version = $version;
+
+		if (!$this->hasTitle()) {
+			// Package default title
+			$this->setTitle($name);
+		}
 	}
 
 	/**
@@ -135,6 +176,15 @@ class Package extends Nette\Object implements IPackage
 	/**
 	 * {@inheritdoc}
 	 */
+	public function setVersion($version)
+	{
+		// Package version
+		$this->version = (string) $version;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
 	public function getVersion()
 	{
 		return $this->version;
@@ -143,19 +193,29 @@ class Package extends Nette\Object implements IPackage
 	/**
 	 * {@inheritdoc}
 	 */
-	public function setType($type)
+	public function setTypes(array $types)
 	{
-		$this->type = (string) $type;
-
-		return $this;
+		$this->types = Utils\ArrayHash::from($types);
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function getType()
+	public function addType($type)
 	{
-		return $this->type;
+		$types = (array) $this->types;
+		$types[] = $type;
+		$types = array_unique($types);
+
+		$this->types = Utils\ArrayHash::from($types);
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getTypes()
+	{
+		return (array) $this->types;
 	}
 
 	/**
@@ -164,8 +224,6 @@ class Package extends Nette\Object implements IPackage
 	public function setTitle($title)
 	{
 		$this->title = (string) $title;
-
-		return $this;
 	}
 
 	/**
@@ -179,11 +237,17 @@ class Package extends Nette\Object implements IPackage
 	/**
 	 * {@inheritdoc}
 	 */
+	public function hasTitle()
+	{
+		return $this->title !== '' && $this->title !== NULL;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
 	public function setDescription($description)
 	{
 		$this->description = (string) $description;
-
-		return $this;
 	}
 
 	/**
@@ -200,8 +264,14 @@ class Package extends Nette\Object implements IPackage
 	public function setKeywords($keywords)
 	{
 		$this->keywords = $this->checkForArray($keywords);
+	}
 
-		return $this;
+	/**
+	 * {@inheritdoc}
+	 */
+	public function addKeyword($keyword)
+	{
+		$this->keywords[] = (string) $keyword;
 	}
 
 	/**
@@ -218,8 +288,6 @@ class Package extends Nette\Object implements IPackage
 	public function setHomepage($homepage)
 	{
 		$this->homepage = (string) $homepage;
-
-		return $this;
 	}
 
 	/**
@@ -236,8 +304,6 @@ class Package extends Nette\Object implements IPackage
 	public function setLicense($license)
 	{
 		$this->license = $this->checkForArray($license);
-
-		return $this;
 	}
 
 	/**
@@ -254,8 +320,6 @@ class Package extends Nette\Object implements IPackage
 	public function setAuthors($authors)
 	{
 		$this->authors = $this->checkForArray($authors);
-
-		return $this;
 	}
 
 	/**
@@ -288,8 +352,6 @@ class Package extends Nette\Object implements IPackage
 	public function setExtra($extra)
 	{
 		$this->extra = $this->checkForArray($extra);
-
-		return $this;
 	}
 
 	/**
@@ -306,8 +368,6 @@ class Package extends Nette\Object implements IPackage
 	public function setReleaseDate(Utils\DateTime $releaseDate)
 	{
 		$this->releaseDate = $releaseDate;
-
-		return $this;
 	}
 
 	/**
@@ -324,8 +384,6 @@ class Package extends Nette\Object implements IPackage
 	public function setInstallationSource($type)
 	{
 		$this->installationSource = $type;
-
-		return $this;
 	}
 
 	/**
@@ -342,8 +400,6 @@ class Package extends Nette\Object implements IPackage
 	public function setSourceType($type)
 	{
 		$this->source['type'] = (string) $type;
-
-		return $this;
 	}
 
 	/**
@@ -360,8 +416,6 @@ class Package extends Nette\Object implements IPackage
 	public function setSourceUrl($url)
 	{
 		$this->source['url'] = (string) $url;
-
-		return $this;
 	}
 
 	/**
@@ -378,8 +432,6 @@ class Package extends Nette\Object implements IPackage
 	public function setDistType($type)
 	{
 		$this->dist['type'] = (string) $type;
-
-		return $this;
 	}
 
 	/**
@@ -396,8 +448,6 @@ class Package extends Nette\Object implements IPackage
 	public function setDistUrl($url)
 	{
 		$this->dist['url'] = (string) $url;
-
-		return $this;
 	}
 
 	/**
@@ -411,11 +461,9 @@ class Package extends Nette\Object implements IPackage
 	/**
 	 * {@inheritdoc}
 	 */
-	public function setDistSha1Checksum($shasum)
+	public function setDistSha1Checksum($shaSum)
 	{
-		$this->dist['shasum'] = (string) $shasum;
-
-		return $this;
+		$this->dist['shaSum'] = (string) $shaSum;
 	}
 
 	/**
@@ -423,7 +471,7 @@ class Package extends Nette\Object implements IPackage
 	 */
 	public function getDistSha1Checksum()
 	{
-		return $this->dist['shasum'];
+		return $this->dist['shaSum'];
 	}
 
 	/**
@@ -432,8 +480,6 @@ class Package extends Nette\Object implements IPackage
 	public function setAutoload($autoload)
 	{
 		$this->autoload = $this->checkForArray($autoload);
-
-		return $this;
 	}
 
 	/**
@@ -450,8 +496,6 @@ class Package extends Nette\Object implements IPackage
 	public function setResources($resources)
 	{
 		$this->resources = $this->checkForArray($resources);
-
-		return $this;
 	}
 
 	/**
@@ -499,7 +543,7 @@ class Package extends Nette\Object implements IPackage
 		if (is_array($value)) {
 			return Utils\ArrayHash::from($value);
 
-		} else if ($value instanceof Utils\ArrayHash) {
+		} elseif ($value instanceof Utils\ArrayHash) {
 			return $value;
 
 		} else {

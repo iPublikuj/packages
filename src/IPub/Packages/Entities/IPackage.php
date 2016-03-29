@@ -2,14 +2,14 @@
 /**
  * IPackage.php
  *
- * @copyright	More in license.md
- * @license		http://www.ipublikuj.eu
- * @author		Adam Kadlec http://www.ipublikuj.eu
- * @package		iPublikuj:Packages!
- * @subpackage	Entities
- * @since		5.0
+ * @copyright      More in license.md
+ * @license        http://www.ipublikuj.eu
+ * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @package        iPublikuj:Packages!
+ * @subpackage     Entities
+ * @since          1.0.0
  *
- * @date		27.09.14
+ * @date           27.09.14
  */
 
 namespace IPub\Packages\Entities;
@@ -19,257 +19,257 @@ use Nette\Utils;
 
 use IPub;
 use IPub\Packages\Exceptions;
-use IPub\Packages\Repository;
 
 interface IPackage
 {
 	/**
-	 * @return string
+	 * @param string $parent
 	 */
-	public function getName();
+	function setParent($parent);
 
 	/**
 	 * @return string
 	 */
-	public function getVersion();
+	function getParent();
+
+	/**
+	 * @param string $name
+	 */
+	function setName($name);
+
+	/**
+	 * @return string
+	 */
+	function getName();
+
+	/**
+	 * @param string $version
+	 */
+	function setVersion($version);
+
+	/**
+	 * @return string
+	 */
+	function getVersion();
+
+	/**
+	 * @param array $types
+	 */
+	function setTypes(array $types);
 
 	/**
 	 * @param string $type
-	 *
-	 * @return $this
 	 */
-	public function setType($type);
+	function addType($type);
 
 	/**
-	 * @return string
+	 * @return array
 	 */
-	public function getType();
+	function getTypes();
 
 	/**
 	 * @param string $title
-	 *
-	 * @return $this
 	 */
-	public function setTitle($title);
+	function setTitle($title);
 
 	/**
 	 * @return string
 	 */
-	public function getTitle();
+	function getTitle();
+
+	/**
+	 * @return bool
+	 */
+	function hasTitle();
 
 	/**
 	 * @param string $description
-	 *
-	 * @return $this
 	 */
-	public function setDescription($description);
+	function setDescription($description);
 
 	/**
 	 * @return string
 	 */
-	public function getDescription();
+	function getDescription();
 
 	/**
 	 * @param array|Utils\ArrayHash $keywords
 	 *
-	 * @return $this
-	 *
 	 * @throws Exceptions\InvalidArgumentException
 	 */
-	public function setKeywords($keywords);
+	function setKeywords($keywords);
+
+	/**
+	 * @param string $keyword
+	 */
+	function addKeyword($keyword);
 
 	/**
 	 * @return Utils\ArrayHash
 	 */
-	public function getKeywords();
+	function getKeywords();
 
 	/**
 	 * @param string $homepage
-	 *
-	 * @return $this
 	 */
-	public function setHomepage($homepage);
+	function setHomepage($homepage);
 
 	/**
 	 * @return string
 	 */
-	public function getHomepage();
+	function getHomepage();
 
 	/**
 	 * @param array|Utils\ArrayHash $license
 	 *
-	 * @return $this
-	 *
 	 * @throws Exceptions\InvalidArgumentException
 	 */
-	public function setLicense($license);
+	function setLicense($license);
 
 	/**
 	 * @return Utils\ArrayHash
 	 */
-	public function getLicense();
+	function getLicense();
 
 	/**
 	 * @param array|Utils\ArrayHash $authors
 	 *
-	 * @return $this
-	 *
 	 * @throws Exceptions\InvalidArgumentException
 	 */
-	public function setAuthors($authors);
+	function setAuthors($authors);
 
 	/**
 	 * @return string|FALSE
 	 */
-	public function getAuthor();
+	function getAuthor();
 
 	/**
 	 * @return Utils\ArrayHash
 	 */
-	public function getAuthors();
+	function getAuthors();
 
 	/**
 	 * @param array|Utils\ArrayHash $extra
 	 *
-	 * @return $this
-	 *
 	 * @throws Exceptions\InvalidArgumentException
 	 */
-	public function setExtra($extra);
+	function setExtra($extra);
 
 	/**
 	 * @return Utils\ArrayHash
 	 */
-	public function getExtra();
+	function getExtra();
 
 	/**
 	 * @param Utils\DateTime $releaseDate
-	 *
-	 * @return $this
 	 */
-	public function setReleaseDate(Utils\DateTime $releaseDate);
+	function setReleaseDate(Utils\DateTime $releaseDate);
 
 	/**
 	 * @return Utils\DateTime
 	 */
-	public function getReleaseDate();
+	function getReleaseDate();
 
 	/**
-	 * Sets source from which this package was installed (source/dist).
+	 * Sets source from which this package was installed (source/dist)
 	 *
 	 * @param string $type
-	 *
-	 * @return $this
 	 */
-	public function setInstallationSource($type);
+	function setInstallationSource($type);
 
 	/**
-	 * Returns source from which this package was installed (source/dist).
+	 * Returns source from which this package was installed (source/dist)
 	 *
 	 * @return string
 	 */
-	public function getInstallationSource();
+	function getInstallationSource();
 
 	/**
 	 * @param string $type
-	 *
-	 * @return $this
 	 */
-	public function setSourceType($type);
+	function setSourceType($type);
 
 	/**
 	 * @return string
 	 */
-	public function getSourceType();
+	function getSourceType();
 
 	/**
 	 * @param string $url
-	 *
-	 * @return $this
 	 */
-	public function setSourceUrl($url);
+	function setSourceUrl($url);
 
 	/**
 	 * @return string
 	 */
-	public function getSourceUrl();
+	function getSourceUrl();
 
 	/**
 	 * @param string $type
-	 *
-	 * @return $this
 	 */
-	public function setDistType($type);
+	function setDistType($type);
 
 	/**
 	 * @return string
 	 */
-	public function getDistType();
+	function getDistType();
 
 	/**
 	 * @param string $url
-	 *
-	 * @return $this
 	 */
-	public function setDistUrl($url);
+	function setDistUrl($url);
 
 	/**
 	 * @return string
 	 */
-	public function getDistUrl();
+	function getDistUrl();
 
 	/**
-	 * @param string $shasum
-	 *
-	 * @return $this
+	 * @param string $shaSum
 	 */
-	public function setDistSha1Checksum($shasum);
+	function setDistSha1Checksum($shaSum);
 
 	/**
 	 * @return string
 	 */
-	public function getDistSha1Checksum();
+	function getDistSha1Checksum();
 
 	/**
 	 * Set the autoload namespace => directory mapping
 	 *
 	 * @param array|Utils\ArrayHash $autoload
 	 *
-	 * @return $this
-	 *
 	 * @throws Exceptions\InvalidArgumentException
 	 */
-	public function setAutoload($autoload);
+	function setAutoload($autoload);
 
 	/**
 	 * Returns the autoload namespace => directory mapping
 	 *
 	 * @return Utils\ArrayHash
 	 */
-	public function getAutoload();
+	function getAutoload();
 
 	/**
 	 * Set the resources scheme => path(s)
 	 *
 	 * @param array|Utils\ArrayHash $resources
 	 *
-	 * @return $this
-	 *
 	 * @throws Exceptions\InvalidArgumentException
 	 */
-	public function setResources($resources);
+	function setResources($resources);
 
 	/**
 	 * Returns the resources scheme => path(s)
 	 *
 	 * @return Utils\ArrayHash
 	 */
-	public function getResources();
+	function getResources();
 
 	/**
 	 * @return string
 	 */
-	public function getUniqueName();
+	function getUniqueName();
 
 	/**
 	 * @param IPackage $package
@@ -277,5 +277,10 @@ interface IPackage
 	 *
 	 * @return bool
 	 */
-	public function compare(IPackage $package, $operator = '==');
+	function compare(IPackage $package, $operator = '==');
+
+	/**
+	 * @return string
+	 */
+	function __toString();
 }

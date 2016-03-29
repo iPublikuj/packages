@@ -2,14 +2,14 @@
 /**
  * PackageDownloader.php
  *
- * @copyright	More in license.md
- * @license		http://www.ipublikuj.eu
- * @author		Adam Kadlec http://www.ipublikuj.eu
- * @package		iPublikuj:Packages!
- * @subpackage	Downloaders
- * @since		5.0
+ * @copyright      More in license.md
+ * @license        http://www.ipublikuj.eu
+ * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @package        iPublikuj:Packages!
+ * @subpackage     Downloaders
+ * @since          1.0.0
  *
- * @date		30.05.15
+ * @date           30.05.15
  */
 
 namespace IPub\Packages\Downloaders;
@@ -23,7 +23,15 @@ use IPub\Packages\Exceptions;
 
 use GuzzleHttp;
 
-class PackageDownloader implements IDownloader
+/**
+ * Package downloader
+ *
+ * @package        iPublikuj:Packages!
+ * @subpackage     Downloaders
+ *
+ * @author         Adam Kadlec <adam.kadlec@fastybird.com>
+ */
+class PackageDownloader implements IPackageDownloader
 {
 	/**
 	 * @var GuzzleHttp\ClientInterface
@@ -44,7 +52,7 @@ class PackageDownloader implements IDownloader
 	public function download(Entities\IPackage $package, $path)
 	{
 		if (!$url = $package->getDistUrl()) {
-			throw new Exceptions\UnexpectedValueException("The given package is missing url information");
+			throw new Exceptions\UnexpectedValueException('The given package is missing url information');
 		}
 
 		$this->downloadFile($path, $url, $package->getDistSha1Checksum());
@@ -65,25 +73,25 @@ class PackageDownloader implements IDownloader
 	 */
 	public function downloadFile($path, $url, $shasum = '')
 	{
-		$file = $path.'/'.uniqid();
+		$file = $path . DIRECTORY_SEPARATOR . uniqid();
 
 		try {
 
 			$data = $this->client->get($url)->getBody();
 
 			if ($shasum && sha1($data) !== $shasum) {
-				throw new Exceptions\ChecksumVerificationException("The file checksum verification failed");
+				throw new Exceptions\ChecksumVerificationException('The file checksum verification failed');
 			}
 
 			if (!Utils\FileSystem::createDir($path) || !Utils\FileSystem::write($file, $data)) {
-				throw new Exceptions\NotWritableException("The path is not writable ($path)");
+				throw new Exceptions\NotWritableException('The path is not writable (' . $path . ')');
 			}
 
 			$zip = new \ZipArchive;
 			$zip->open($file);
 
 			if ($zip->extractTo($path) !== TRUE) {
-				throw new Exceptions\ArchiveExtractionException("The file extraction failed");
+				throw new Exceptions\ArchiveExtractionException('The file extraction failed');
 			}
 
 			Utils\FileSystem::delete($file);
@@ -93,12 +101,11 @@ class PackageDownloader implements IDownloader
 			Utils\FileSystem::delete($path);
 
 			if ($ex instanceof GuzzleHttp\Exception\TransferException) {
-
 				if ($ex instanceof GuzzleHttp\Exception\BadResponseException) {
-					throw new Exceptions\UnauthorizedDownloadException("Unauthorized download ($url)");
+					throw new Exceptions\UnauthorizedDownloadException('Unauthorized download (' . $url . ')');
 				}
 
-				throw new Exceptions\DownloadErrorException("The file download failed ($url)");
+				throw new Exceptions\DownloadErrorException('The file download failed (' . $url . ')');
 			}
 
 			throw $ex;

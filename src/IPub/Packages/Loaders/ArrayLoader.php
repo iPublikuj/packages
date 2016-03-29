@@ -2,14 +2,14 @@
 /**
  * ArrayLoader.php
  *
- * @copyright	More in license.md
- * @license		http://www.ipublikuj.eu
- * @author		Adam Kadlec http://www.ipublikuj.eu
- * @package		iPublikuj:Packages!
- * @subpackage	Loaders
- * @since		5.0
+ * @copyright      More in license.md
+ * @license        http://www.ipublikuj.eu
+ * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @package        iPublikuj:Packages!
+ * @subpackage     Loaders
+ * @since          1.0.0
  *
- * @date		30.09.14
+ * @date           30.09.14
  */
 
 namespace IPub\Packages\Loaders;
@@ -23,6 +23,14 @@ use IPub\Packages\Entities;
 use IPub\Packages\Exceptions;
 use IPub\Packages\Version;
 
+/**
+ * Package array loader
+ *
+ * @package        iPublikuj:Packages!
+ * @subpackage     Loaders
+ *
+ * @author         Adam Kadlec <adam.kadlec@fastybird.com>
+ */
 class ArrayLoader implements ILoader
 {
 	/**
@@ -35,34 +43,44 @@ class ArrayLoader implements ILoader
 		}
 
 		if (!isset($config['name'])) {
-			throw new Exceptions\UnexpectedValueException('Unknown package has no name defined ('.json_encode($config).').');
+			throw new Exceptions\UnexpectedValueException('Unknown package has no name defined (' . json_encode($config) . ').');
 		}
 
 		if (!isset($config['version'])) {
-			throw new Exceptions\UnexpectedValueException('Package "'.$config['name'].'" has no version defined.');
+			throw new Exceptions\UnexpectedValueException('Package "' . $config['name'] . '" has no version defined.');
 		}
 
 		if (!Version\Validator::validate($config['version'])) {
-			throw new Exceptions\UnexpectedValueException('Package "'.$config['name'].'" has invalid version defined "'.$config['version'].'".');
+			throw new Exceptions\UnexpectedValueException('Package "' . $config['name'] . '" has invalid version defined "' . $config['version'] . '".');
 		}
 
-		/** @var Entities\IPackage $package */
-		$package = new $class($config['name'], $config['version']);
-		$package->setType($config['package']);
+		// Create entity
+		$package = $this->createEntity($config['name'], $config['version'], $class);
 
-		if ($value = $this->checkStringConfig($config, 'title') AND $value !== FALSE) {
+		if (($value = $this->checkArrayConfig($config, 'package')) && $value !== FALSE) {
+			$package->setTypes($value);
+
+		} elseif (($value = $this->checkStringConfig($config, 'package')) && $value !== FALSE) {
+			$package->addType($value);
+		}
+
+		if (($value = $this->checkStringConfig($config, 'parent')) && $value !== FALSE) {
+			$package->setParent($value);
+		}
+
+		if (($value = $this->checkStringConfig($config, 'title')) && $value !== FALSE) {
 			$package->setTitle($value);
 		}
 
-		if ($value = $this->checkStringConfig($config, 'description') AND $value !== FALSE) {
+		if (($value = $this->checkStringConfig($config, 'description')) && $value !== FALSE) {
 			$package->setDescription($value);
 		}
 
-		if ($value = $this->checkArrayConfig($config, 'keywords') AND $value !== FALSE) {
+		if (($value = $this->checkArrayConfig($config, 'keywords')) && $value !== FALSE) {
 			$package->setKeywords($config['keywords']);
 		}
 
-		if ($value = $this->checkStringConfig($config, 'homepage') AND $value !== FALSE) {
+		if (($value = $this->checkStringConfig($config, 'homepage')) && $value !== FALSE) {
 			$package->setHomepage($value);
 		}
 
@@ -70,11 +88,11 @@ class ArrayLoader implements ILoader
 			$package->setLicense(is_array($config['license']) ? $config['license'] : [$config['license']]);
 		}
 
-		if ($value = $this->checkArrayConfig($config, 'authors') AND $value !== FALSE) {
+		if (($value = $this->checkArrayConfig($config, 'authors')) && $value !== FALSE) {
 			$package->setAuthors($value);
 		}
 
-		if ($value = $this->checkArrayConfig($config, 'extra') AND $value !== FALSE) {
+		if (($value = $this->checkArrayConfig($config, 'extra')) && $value !== FALSE) {
 			$package->setExtra($value);
 		}
 
@@ -105,15 +123,25 @@ class ArrayLoader implements ILoader
 			$package->setDistSha1Checksum(isset($dist['shasum']) ? $dist['shasum'] : NULL);
 		}
 
-		if ($value = $this->checkArrayConfig($config, 'autoload') AND $value !== FALSE) {
+		if (($value = $this->checkArrayConfig($config, 'autoload')) && $value !== FALSE) {
 			$package->setAutoload($value);
 		}
 
-		if ($value = $this->checkArrayConfig($config, 'resources') AND $value !== FALSE) {
+		if (($value = $this->checkArrayConfig($config, 'resources')) && $value !== FALSE) {
 			$package->setResources($value);
 		}
 
 		return $package;
+	}
+
+	/**
+	 * @param string $class
+	 *
+	 * @return Entities\IPackage
+	 */
+	protected function createEntity($name, $version, $class = 'IPub\Packages\Entities\Package')
+	{
+		return new $class($name, $version);
 	}
 
 	/**
