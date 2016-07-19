@@ -12,6 +12,8 @@
  * @date           30.09.14
  */
 
+declare(strict_types = 1);
+
 namespace IPub\Packages\Loaders;
 
 use IPub;
@@ -31,10 +33,9 @@ interface ILoader
 	/**
 	 * Creates a package instance based on a given package config
 	 *
-	 * @param mixed $config
-	 * @param string $class
+	 * @param string $file
 	 *
 	 * @return Entities\IPackage
 	 */
-	public function load($config, $class = 'IPub\Packages\Entities\Package');
+	public function load(string $file) : Entities\IPackage;
 }

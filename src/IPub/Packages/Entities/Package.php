@@ -12,6 +12,8 @@
  * @date           27.09.14
  */
 
+declare(strict_types = 1);
+
 namespace IPub\Packages\Entities;
 
 use Nette;
@@ -19,211 +21,40 @@ use Nette\Utils;
 
 use IPub;
 use IPub\Packages\Exceptions;
-use IPub\Packages\Repository;
 
-class Package extends Nette\Object implements IPackage
+/**
+ * Package abstract entity
+ *
+ * @package        iPublikuj:Packages!
+ * @subpackage     Entities
+ *
+ * @author         Adam Kadlec <adam.kadlec@fastybird.com>
+ */
+abstract class Package extends Nette\Object implements IPackage
 {
 	/**
-	 * @var string
+	 * @var mixed
 	 */
-	private $parent;
+	protected $composerData;
 
 	/**
-	 * @var string
+	 * @param mixed[] $composerData
 	 */
-	private $name;
-
-	/**
-	 * @var string
-	 */
-	private $version;
-
-	/**
-	 * @var Utils\ArrayHash
-	 */
-	private $types;
-
-	/**
-	 * @var string
-	 */
-	private $title;
-
-	/**
-	 * @var string
-	 */
-	private $description;
-
-	/**
-	 * @var Utils\ArrayHash
-	 */
-	private $keywords = [];
-
-	/**
-	 * @var string
-	 */
-	private $homepage;
-
-	/**
-	 * @var Utils\ArrayHash
-	 */
-	private $license = [];
-
-	/**
-	 * @var Utils\ArrayHash
-	 */
-	private $authors = [];
-
-	/**
-	 * @var Utils\ArrayHash
-	 */
-	private $extra = [];
-
-	/**
-	 * @var Utils\DateTime
-	 */
-	private $releaseDate;
-
-	/**
-	 * @var string
-	 */
-	private $installationSource;
-
-	/**
-	 * @var array
-	 */
-	private $source = [
-		'type' => NULL,
-		'url'  => NULL
-	];
-
-	/**
-	 * @var array
-	 */
-	private $dist = [
-		'type'   => NULL,
-		'url'    => NULL,
-		'shaSum' => NULL
-	];
-
-	/**
-	 * @var Utils\ArrayHash
-	 */
-	private $autoload = [];
-
-	/**
-	 * @var Utils\ArrayHash
-	 */
-	private $resources = [];
-
-	/**
-	 * @param string $name
-	 * @param string $version
-	 */
-	public function __construct($name, $version)
+	public function __construct(array $composerData)
 	{
-		$this->setName($name);
-		$this->setVersion($version);
+		$this->composerData = $composerData;
 
-		$this->types = new Utils\ArrayHash;
-		$this->keywords = new Utils\ArrayHash;
-		$this->license = new Utils\ArrayHash;
-		$this->authors = new Utils\ArrayHash;
-		$this->extra = new Utils\ArrayHash;
-		$this->autoload = new Utils\ArrayHash;
-		$this->resources = new Utils\ArrayHash;
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function setParent($parent)
-	{
-		$this->parent = (string) $parent;
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getParent()
-	{
-		return $this->parent;
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function setName($name)
-	{
-		$name = (string) $name;
-
-		// Package name
-		$this->name = strtolower($name);
-
-		if (!$this->hasTitle()) {
-			// Package default title
-			$this->setTitle($name);
+		if (!isset($composerData['name'])) {
+			throw new Exceptions\UnexpectedValueException('Unknown package has no name defined (' . json_encode($composerData) . ').');
 		}
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function getName()
+	public function getName() : string
 	{
-		return $this->name;
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function setVersion($version)
-	{
-		// Package version
-		$this->version = (string) $version;
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getVersion()
-	{
-		return $this->version;
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function setTypes(array $types)
-	{
-		$this->types = Utils\ArrayHash::from($types);
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function addType($type)
-	{
-		$types = (array) $this->types;
-		$types[] = $type;
-		$types = array_unique($types);
-
-		$this->types = Utils\ArrayHash::from($types);
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getTypes()
-	{
-		return (array) $this->types;
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function setTitle($title)
-	{
-		$this->title = (string) $title;
+		return $this->composerData['name'];
 	}
 
 	/**
@@ -231,63 +62,55 @@ class Package extends Nette\Object implements IPackage
 	 */
 	public function getTitle()
 	{
-		return $this->title;
+		return isset($this->composerData['title']) ? $this->composerData['title'] : NULL;
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function hasTitle()
+	public function hasTitle() : bool
 	{
-		return $this->title !== '' && $this->title !== NULL;
+		return $this->getTitle() ? TRUE : FALSE;
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function setDescription($description)
+	public function getDescription() : string
 	{
-		$this->description = (string) $description;
+		return $this->composerData['description'];
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function getDescription()
+	public function getVersion() : string
 	{
-		return $this->description;
+		return isset($this->composerData['version']) ? $this->composerData['version'] : '0.0.0';
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function setKeywords($keywords)
+	public function getType() : string
 	{
-		$this->keywords = $this->checkForArray($keywords);
+		return $this->composerData['type'];
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function addKeyword($keyword)
+	public function getKeywords() : Utils\ArrayHash
 	{
-		$this->keywords[] = (string) $keyword;
-	}
+		$keywords = [];
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getKeywords()
-	{
-		return $this->keywords;
-	}
+		if (isset($this->composerData['keywords'])) {
+			$keywords = $this->composerData['keywords'];
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function setHomepage($homepage)
-	{
-		$this->homepage = (string) $homepage;
+			$keywords = is_array($keywords) ? $keywords : array_map('trim', explode(',', $keywords));
+		}
+
+		return Utils\ArrayHash::from($keywords);
 	}
 
 	/**
@@ -295,79 +118,7 @@ class Package extends Nette\Object implements IPackage
 	 */
 	public function getHomepage()
 	{
-		return $this->homepage;
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function setLicense($license)
-	{
-		$this->license = $this->checkForArray($license);
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getLicense()
-	{
-		return $this->license;
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function setAuthors($authors)
-	{
-		$this->authors = $this->checkForArray($authors);
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getAuthor()
-	{
-		if ($this->authors->count()) {
-			// Convert to classic array
-			$authors = (array) $this->authors;
-
-			return current($authors);
-
-		} else {
-			return FALSE;
-		}
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getAuthors()
-	{
-		return $this->authors;
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function setExtra($extra)
-	{
-		$this->extra = $this->checkForArray($extra);
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getExtra()
-	{
-		return $this->extra;
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function setReleaseDate(Utils\DateTime $releaseDate)
-	{
-		$this->releaseDate = $releaseDate;
+		return isset($this->composerData['homepage']) ? $this->composerData['homepage'] : NULL;
 	}
 
 	/**
@@ -375,149 +126,155 @@ class Package extends Nette\Object implements IPackage
 	 */
 	public function getReleaseDate()
 	{
-		return $this->releaseDate;
+		if (isset($this->composerData['time'])) {
+			try {
+				return new Utils\DateTime($this->composerData['time'], new \DateTimeZone('UTC'));
+
+			} catch (\Exception $ex) {
+				// If date could not be converted to object, than is in wrong format and is not added to package
+			}
+		}
+
+		return NULL;
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function setInstallationSource($type)
+	public function getLicense() : Utils\ArrayHash
 	{
-		$this->installationSource = $type;
+		$licenses = [];
+
+		if (isset($this->composerData['license'])) {
+			$licenses = $this->composerData['license'];
+
+			$licenses = is_array($licenses) ? $licenses : array_map('trim', explode(',', $licenses));
+		}
+
+		return Utils\ArrayHash::from($licenses);
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function getInstallationSource()
+	public function getAuthors() : Utils\ArrayHash
 	{
-		return $this->installationSource;
+		$authors = [];
+
+		if (isset($this->composerData['authors'])) {
+			$authors = $this->composerData['authors'];
+		}
+
+		return Utils\ArrayHash::from($authors);
 	}
+
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function setSourceType($type)
+	public function getSupport()
 	{
-		$this->source['type'] = (string) $type;
+		return isset($this->composerData['support']) ? $this->composerData['support'] : NULL;
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function getSourceType()
+	public function getRequire() : array
 	{
-		return $this->source['type'];
+		$ret = [];
+
+		if (isset($this->composerData['require'])) {
+			foreach ($this->composerData['require'] as $name => $require) {
+				if (strpos($name, '/') !== FALSE) {
+					$ret[] = $name;
+				}
+			}
+		}
+
+		return $ret;
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function setSourceUrl($url)
+	public function getRequireDev() : array
 	{
-		$this->source['url'] = (string) $url;
+		$ret = [];
+
+		if (isset($this->composerData['require-dev'])) {
+			foreach ($this->composerData['require-dev'] as $name => $require) {
+				if (strpos($name, '/') !== FALSE) {
+					$ret[] = $name;
+				}
+			}
+		}
+
+		return $ret;
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function getSourceUrl()
+	public function getAutoload() : Utils\ArrayHash
 	{
-		return $this->source['url'];
+		$autoload = [];
+
+		if (isset($this->composerData['autoload'])) {
+			$autoload = $this->composerData['autoload'];
+		}
+
+		return Utils\ArrayHash::from($autoload);
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function setDistType($type)
+	public function getConfiguration() : Utils\ArrayHash
 	{
-		$this->dist['type'] = (string) $type;
+		$data = [];
+
+		if (isset($this->composerData['extra']['ipub']['configuration'])) {
+			$data = $this->composerData['extra']['ipub']['configuration'];
+		}
+
+		return Utils\ArrayHash::from($data);
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function getDistType()
+	public function getScripts() : Utils\ArrayHash
 	{
-		return $this->dist['type'];
+		$scripts = ['IPub\Packages\Scripts\ConfigurationScript'];
+
+		if (isset($this->composerData['extra']['ipub']['scripts'])) {
+			$scripts = array_merge($scripts, $this->composerData['extra']['ipub']['scripts']);
+		}
+
+		return Utils\ArrayHash::from($scripts);
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function setDistUrl($url)
+	public function getUniqueName() : string
 	{
-		$this->dist['url'] = (string) $url;
+		return sprintf('%s-%s', $this->getName(), $this->composerData['version']);
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function getDistUrl()
+	public function getPath() : string
 	{
-		return $this->dist['url'];
+		return dirname($this->getReflection()->getFileName());
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function setDistSha1Checksum($shaSum)
-	{
-		$this->dist['shaSum'] = (string) $shaSum;
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getDistSha1Checksum()
-	{
-		return $this->dist['shaSum'];
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function setAutoload($autoload)
-	{
-		$this->autoload = $this->checkForArray($autoload);
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getAutoload()
-	{
-		return $this->autoload;
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function setResources($resources)
-	{
-		$this->resources = $this->checkForArray($resources);
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getResources()
-	{
-		return $this->resources;
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getUniqueName()
-	{
-		return sprintf('%s-%s', $this->getName(), $this->getVersion());
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function compare(IPackage $package, $operator = '==')
+	public function compare(IPackage $package, string $operator = '==') : bool
 	{
 		return strtolower($this->getName()) === strtolower($package->getName()) &&
 		version_compare(strtolower($this->getVersion()), strtolower($package->getVersion()), $operator);
@@ -526,28 +283,8 @@ class Package extends Nette\Object implements IPackage
 	/**
 	 * {@inheritdoc}
 	 */
-	public function __toString()
+	public function __toString() : string
 	{
 		return $this->getUniqueName();
-	}
-
-	/**
-	 * @param array|Utils\ArrayHash $value
-	 *
-	 * @return Utils\ArrayHash
-	 *
-	 * @throws Exceptions\InvalidArgumentException
-	 */
-	protected function checkForArray($value)
-	{
-		if (is_array($value)) {
-			return Utils\ArrayHash::from($value);
-
-		} elseif ($value instanceof Utils\ArrayHash) {
-			return $value;
-
-		} else {
-			throw new Exceptions\InvalidArgumentException('Invalid value given. Only array or instance of \Nette\Utils\ArrayHash are allowed.');
-		}
 	}
 }

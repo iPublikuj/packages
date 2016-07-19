@@ -12,259 +12,122 @@
  * @date           27.09.14
  */
 
+declare(strict_types = 1);
+
 namespace IPub\Packages\Entities;
 
 use Nette;
 use Nette\Utils;
 
-use IPub;
-use IPub\Packages\Exceptions;
-
+/**
+ * Package interface
+ *
+ * @package        iPublikuj:Packages!
+ * @subpackage     Entities
+ *
+ * @author         Adam Kadlec <adam.kadlec@fastybird.com>
+ */
 interface IPackage
 {
 	/**
-	 * @param string $parent
+	 * Define statuses
 	 */
-	function setParent($parent);
+	const STATE_ENABLED = 'enabled';
+	const STATE_DISABLED = 'disabled';
+	const STATE_UNREGISTERED = 'unregistered';
+
+	/**
+	 * List of available statuses
+	 */
+	const STATUSES = [
+		self::STATE_ENABLED,
+		self::STATE_DISABLED,
+	];
 
 	/**
 	 * @return string
 	 */
-	function getParent();
+	function getName() : string;
 
 	/**
-	 * @param string $name
-	 */
-	function setName($name);
-
-	/**
-	 * @return string
-	 */
-	function getName();
-
-	/**
-	 * @param string $version
-	 */
-	function setVersion($version);
-
-	/**
-	 * @return string
-	 */
-	function getVersion();
-
-	/**
-	 * @param array $types
-	 */
-	function setTypes(array $types);
-
-	/**
-	 * @param string $type
-	 */
-	function addType($type);
-
-	/**
-	 * @return array
-	 */
-	function getTypes();
-
-	/**
-	 * @param string $title
-	 */
-	function setTitle($title);
-
-	/**
-	 * @return string
+	 * @return string|NULL
 	 */
 	function getTitle();
 
 	/**
 	 * @return bool
 	 */
-	function hasTitle();
-
-	/**
-	 * @param string $description
-	 */
-	function setDescription($description);
+	function hasTitle() : bool;
 
 	/**
 	 * @return string
 	 */
-	function getDescription();
+	function getDescription() : string;
 
 	/**
-	 * @param array|Utils\ArrayHash $keywords
-	 *
-	 * @throws Exceptions\InvalidArgumentException
+	 * @return string
 	 */
-	function setKeywords($keywords);
+	function getVersion() : string;
 
 	/**
-	 * @param string $keyword
+	 * @return string
 	 */
-	function addKeyword($keyword);
+	function getType() : string;
 
 	/**
 	 * @return Utils\ArrayHash
 	 */
-	function getKeywords();
+	function getKeywords() : Utils\ArrayHash;
 
 	/**
-	 * @param string $homepage
-	 */
-	function setHomepage($homepage);
-
-	/**
-	 * @return string
+	 * @return string|NULL
 	 */
 	function getHomepage();
 
 	/**
-	 * @param array|Utils\ArrayHash $license
-	 *
-	 * @throws Exceptions\InvalidArgumentException
-	 */
-	function setLicense($license);
-
-	/**
-	 * @return Utils\ArrayHash
-	 */
-	function getLicense();
-
-	/**
-	 * @param array|Utils\ArrayHash $authors
-	 *
-	 * @throws Exceptions\InvalidArgumentException
-	 */
-	function setAuthors($authors);
-
-	/**
-	 * @return string|FALSE
-	 */
-	function getAuthor();
-
-	/**
-	 * @return Utils\ArrayHash
-	 */
-	function getAuthors();
-
-	/**
-	 * @param array|Utils\ArrayHash $extra
-	 *
-	 * @throws Exceptions\InvalidArgumentException
-	 */
-	function setExtra($extra);
-
-	/**
-	 * @return Utils\ArrayHash
-	 */
-	function getExtra();
-
-	/**
-	 * @param Utils\DateTime $releaseDate
-	 */
-	function setReleaseDate(Utils\DateTime $releaseDate);
-
-	/**
-	 * @return Utils\DateTime
+	 * @return Utils\DateTime|NULL
 	 */
 	function getReleaseDate();
 
 	/**
-	 * Sets source from which this package was installed (source/dist)
-	 *
-	 * @param string $type
-	 */
-	function setInstallationSource($type);
-
-	/**
-	 * Returns source from which this package was installed (source/dist)
-	 *
-	 * @return string
-	 */
-	function getInstallationSource();
-
-	/**
-	 * @param string $type
-	 */
-	function setSourceType($type);
-
-	/**
-	 * @return string
-	 */
-	function getSourceType();
-
-	/**
-	 * @param string $url
-	 */
-	function setSourceUrl($url);
-
-	/**
-	 * @return string
-	 */
-	function getSourceUrl();
-
-	/**
-	 * @param string $type
-	 */
-	function setDistType($type);
-
-	/**
-	 * @return string
-	 */
-	function getDistType();
-
-	/**
-	 * @param string $url
-	 */
-	function setDistUrl($url);
-
-	/**
-	 * @return string
-	 */
-	function getDistUrl();
-
-	/**
-	 * @param string $shaSum
-	 */
-	function setDistSha1Checksum($shaSum);
-
-	/**
-	 * @return string
-	 */
-	function getDistSha1Checksum();
-
-	/**
-	 * Set the autoload namespace => directory mapping
-	 *
-	 * @param array|Utils\ArrayHash $autoload
-	 *
-	 * @throws Exceptions\InvalidArgumentException
-	 */
-	function setAutoload($autoload);
-
-	/**
-	 * Returns the autoload namespace => directory mapping
-	 *
 	 * @return Utils\ArrayHash
 	 */
-	function getAutoload();
+	function getLicense() : Utils\ArrayHash;
 
 	/**
-	 * Set the resources scheme => path(s)
-	 *
-	 * @param array|Utils\ArrayHash $resources
-	 *
-	 * @throws Exceptions\InvalidArgumentException
-	 */
-	function setResources($resources);
-
-	/**
-	 * Returns the resources scheme => path(s)
-	 *
 	 * @return Utils\ArrayHash
 	 */
-	function getResources();
+	function getAuthors() : Utils\ArrayHash;
+
+	/**
+	 * @return array|NULL
+	 */
+	function getSupport();
+
+	/**
+	 * @return string[]
+	 */
+	public function getRequire() : array;
+
+	/**
+	 * @return string[]
+	 */
+	public function getRequireDev() : array;
+
+	/**
+	 * @return Utils\ArrayHash
+	 */
+	function getAutoload() : Utils\ArrayHash;
+
+	/**
+	 * @return Utils\ArrayHash
+	 */
+	public function getConfiguration() : Utils\ArrayHash;
+
+	/**
+	 * @return Utils\ArrayHash
+	 */
+	public function getScripts() : Utils\ArrayHash;
 
 	/**
 	 * @return string
@@ -272,15 +135,20 @@ interface IPackage
 	function getUniqueName();
 
 	/**
+	 * @return string
+	 */
+	function getPath() : string;
+
+	/**
 	 * @param IPackage $package
 	 * @param string $operator
 	 *
 	 * @return bool
 	 */
-	function compare(IPackage $package, $operator = '==');
+	function compare(IPackage $package, string $operator = '==') : bool;
 
 	/**
 	 * @return string
 	 */
-	function __toString();
+	function __toString() : string;
 }

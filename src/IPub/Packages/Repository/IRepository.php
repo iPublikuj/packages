@@ -2,15 +2,17 @@
 /**
  * IRepository.php
  *
- * @copyright      More in license.md
- * @license        http://www.ipublikuj.eu
- * @author         Adam Kadlec http://www.ipublikuj.eu
- * @package        iPublikuj:Packages!
- * @subpackage     Repository
- * @since          1.0.0
+ * @copyright    More in license.md
+ * @license      http://www.ipublikuj.eu
+ * @author       Adam Kadlec http://www.ipublikuj.eu
+ * @package      iPublikuj:Packages!
+ * @subpackage   Repository
+ * @since        1.0.0
  *
- * @date           30.05.15
+ * @date         30.05.15
  */
+
+declare(strict_types = 1);
 
 namespace IPub\Packages\Repository;
 
@@ -20,72 +22,76 @@ use IPub\Packages\Entities;
 /**
  * Packages repository interface
  *
- * @package        iPublikuj:Packages!
- * @subpackage     Repository
+ * @package      iPublikuj:Packages!
+ * @subpackage   Repository
  *
- * @author         Adam Kadlec <adam.kadlec@fastybird.com>
+ * @author       Adam Kadlec <adam.kadlec@fastybird.com>
  */
-interface IRepository extends \Countable
+interface IRepository extends \Countable, \ArrayAccess, \IteratorAggregate
 {
 	/**
 	 * Checks if specified package registered
 	 *
-	 * @param  Entities\IPackage $package
+	 * @param Entities\IPackage $package
 	 *
 	 * @return bool
 	 */
-	function hasPackage(Entities\IPackage $package);
+	function hasPackage(Entities\IPackage $package) : bool;
 
 	/**
 	 * Searches for the first match of a package by name and version
 	 *
-	 * @param  string $name
-	 * @param  string $version
+	 * @param string $name
+	 * @param string $version
 	 *
-	 * @return Entities\IPackage|FALSE
+	 * @return Entities\IPackage|bool
 	 */
-	function findPackage($name, $version = 'latest');
+	function findPackage(string $name, string $version = 'latest');
 
 	/**
 	 * Searches for all packages matching a name and optionally a version
 	 *
-	 * @param  string $name
-	 * @param  string $version
+	 * @param string $name
+	 * @param string $version
 	 *
 	 * @return Entities\IPackage[]
 	 */
-	function findPackages($name, $version = NULL);
+	function findPackages(string $name, string $version = NULL) : array;
 
 	/**
 	 * Filters all the packages through a callback
 	 *
-	 * @param  callable $callback
-	 * @param  string $class
+	 * @param callable $callback
 	 *
-	 * @return bool
+	 * @return Entities\IPackage[]
 	 */
-	function filterPackages(callable $callback, $class = 'IPub\Packages\Entities\Package');
+	function filterPackages(callable $callback) : array;
 
 	/**
 	 * Returns list of registered packages
 	 *
 	 * @return Entities\IPackage[]
 	 */
-	function getPackages();
+	function getPackages() : array;
 
 	/**
-	 * Adds package to the repository
+	 * Reload packages repository
 	 *
-	 * @param Entities\IPackage $package
-	 *
-	 * @return Entities\IPackage $package
+	 * @return void
 	 */
-	function addPackage(Entities\IPackage $package);
+	function reload();
 
 	/**
-	 * Removes package from the repository
+	 * Get the repository path
 	 *
-	 * @param Entities\IPackage $package
+	 * @return array
 	 */
-	function removePackage(Entities\IPackage $package);
+	function getPaths() : array;
+
+	/**
+	 * Adds a package path(s)
+	 *
+	 * @param string|array $paths
+	 */
+	public function addPath($paths);
 }

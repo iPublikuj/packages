@@ -1,6 +1,6 @@
 <?php
 /**
- * ArchiveExtractionException.php
+ * InvalidJobActionException.php
  *
  * @copyright      More in license.md
  * @license        http://www.ipublikuj.eu
@@ -9,11 +9,11 @@
  * @subpackage     Exceptions
  * @since          1.0.0
  *
- * @date           27.03.15
+ * @date           12.07.16
  */
 
 namespace IPub\Packages\Exceptions;
 
-class ArchiveExtractionException extends \RuntimeException implements IException
+class InvalidJobActionException extends InvalidArgumentException
 {
 }
