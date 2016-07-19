@@ -60,7 +60,7 @@ class ExtensionTest extends Tester\TestCase
 
 		$config->addConfig(__DIR__ . '/files/config.neon');
 
-		Packages\DI\PackagesExtension::register($config);
+		Packages\DI\PackagesExtensions::register($config);
 
 		return $config->createContainer();
 	}

@@ -65,17 +65,17 @@ interface IPackagesManager
 	function addScript(string $name, Scripts\IScript $service);
 
 	/**
-	 * @return string[]
+	 * @return array[]
 	 */
 	function registerAvailable() : array;
 
 	/**
-	 * @return string[]
+	 * @return array[]
 	 */
 	function enableAvailable() : array;
 
 	/**
-	 * @return string[]
+	 * @return array[]
 	 */
 	function disableAbsent() : array;
 
