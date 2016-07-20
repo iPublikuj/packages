@@ -234,8 +234,11 @@ final class PackagesManager extends Nette\Object implements IPackagesManager
 		$registeredPackages = array_keys((array) $this->getPackagesConfig());
 
 		foreach (array_diff($installedPackages, $registeredPackages) as $name) {
-			$this->register($this->repository->findPackage($name));
-			$actions[] = [$name => self::ACTION_REGISTER];
+			/** @var Entities\IPackage $package */
+			if ($package = $this->repository->findPackage($name)) {
+				$this->register($package);
+				$actions[] = [$name => self::ACTION_REGISTER];
+			}
 		}
 
 		return $actions;
@@ -294,16 +297,16 @@ final class PackagesManager extends Nette\Object implements IPackagesManager
 
 		foreach (array_diff($registeredPackages, $installedPackages) as $name) {
 			/** @var Entities\IPackage $package */
-			$package = $this->repository->findPackage($name);
+			if ($package = $this->repository->findPackage($name)) {
+				if ($this->getStatus($package) === Entities\IPackage::STATE_ENABLED) {
+					$this->disable($package);
+					$actions[] = [$name => self::ACTION_DISABLE];
+				}
 
-			if ($this->getStatus($package) === Entities\IPackage::STATE_ENABLED) {
 				$this->disable($package);
-				$actions[] = [$name => self::ACTION_DISABLE];
+
+				$actions[] = [$package->getName() => self::ACTION_DISABLE];
 			}
-
-			$this->disable($package);
-
-			$actions[] = [$package->getName() => self::ACTION_DISABLE];
 		}
 
 		return $actions;
@@ -312,7 +315,7 @@ final class PackagesManager extends Nette\Object implements IPackagesManager
 	/**
 	 * {@inheritdoc}
 	 */
-	public function install(string $name, bool $packagist = FALSE, bool $preferSource = TRUE)
+	public function install(string $name)
 	{
 		// Check if installer service is created
 		if ($this->installer === NULL) {
@@ -324,13 +327,15 @@ final class PackagesManager extends Nette\Object implements IPackagesManager
 			throw new Exceptions\InvalidArgumentException(sprintf('Package "%s" is already installed', $name));
 		}
 
-		$this->installer->install($name, $packagist, $preferSource);
+		$this->installer->install($name);
 
 		// Reload repository after installation
 		$this->repository->reload();
 
 		// Get newly installed package
-		$package = $this->repository->findPackage($name);
+		if (!$package = $this->repository->findPackage($name)) {
+			throw new Exceptions\InvalidArgumentException(sprintf('Package "%s" could not be found.', $name));
+		}
 
 		// Process all package scripts
 		foreach ($package->getScripts() as $class) {

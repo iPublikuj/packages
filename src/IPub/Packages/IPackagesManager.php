@@ -81,10 +81,8 @@ interface IPackagesManager
 
 	/**
 	 * @param string $name
-	 * @param bool $packagist
-	 * @param bool $preferSource
 	 */
-	function install(string $name, bool $packagist = FALSE, bool $preferSource = TRUE);
+	function install(string $name);
 
 	/**
 	 * @param string $name
