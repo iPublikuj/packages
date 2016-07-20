@@ -1,3 +1,0 @@
-doctrine:
-	metadata:
-		IPubTests\DoctrineBlameable: %appDir%IPubTests/DoctrineBlameable/models

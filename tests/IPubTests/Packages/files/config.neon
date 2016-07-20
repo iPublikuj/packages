@@ -1,9 +1,8 @@
-common:
-	php:
-		date.timezone: Europe/Prague
+php:
+	date.timezone: Europe/Prague
 
-	extensions:
-		console: Kdyby\Console\DI\ConsoleExtension
+extensions:
+	console: Kdyby\Console\DI\ConsoleExtension
 
-	console:
-		url: http://example.com
+console:
+	url: http://example.com
