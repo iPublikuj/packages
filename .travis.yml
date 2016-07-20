@@ -6,11 +6,6 @@ env:
 
 php:
   - 7.0
-  - hhvm
-
-matrix:
-  allow_failures:
-    - php: hhvm
 
 before_script:
   - php .travis.composer.php
