@@ -28,7 +28,7 @@ use IPub\Packages\Repository;
  * @package        iPublikuj:Packages!
  * @subpackage     Commands
  *
- * @author         Adam Kadlec <adam.kadlec@fastybird.com>
+ * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
  */
 abstract class Command extends Console\Command\Command
 {

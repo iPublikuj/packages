@@ -30,15 +30,10 @@ use IPub\Packages\Repository;
  * @package        iPublikuj:Packages!
  * @subpackage     Helpers
  *
- * @author         Adam Kadlec <adam.kadlec@fastybird.com>
+ * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
  */
 final class PathResolver extends Nette\Object
 {
-	/**
-	 * Define class name
-	 */
-	const CLASS_NAME = __CLASS__;
-
 	/**
 	 * @var Repository\IRepository
 	 */

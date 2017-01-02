@@ -31,15 +31,10 @@ use IPub\Packages\Loaders;
  * @package        iPublikuj:Packages!
  * @subpackage     Repository
  *
- * @author         Adam Kadlec <adam.kadlec@fastybird.com>
+ * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
  */
 final class Repository implements IRepository
 {
-	/**
-	 * Define class name
-	 */
-	const CLASS_NAME = __CLASS__;
-
 	/**
 	 * @var array
 	 */

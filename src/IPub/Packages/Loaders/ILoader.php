@@ -26,7 +26,7 @@ use IPub\Packages\Entities;
  * @package        iPublikuj:Packages!
  * @subpackage     Loaders
  *
- * @author         Adam Kadlec <adam.kadlec@fastybird.com>
+ * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
  */
 interface ILoader
 {

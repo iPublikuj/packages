@@ -25,7 +25,7 @@ use IPub\Packages\Entities;
  * @package      iPublikuj:Packages!
  * @subpackage   Repository
  *
- * @author       Adam Kadlec <adam.kadlec@fastybird.com>
+ * @author       Adam Kadlec <adam.kadlec@ipublikuj.eu>
  */
 interface IRepository extends \Countable, \ArrayAccess, \IteratorAggregate
 {

@@ -30,7 +30,7 @@ use IPub\Packages\Exceptions;
  * @package        iPublikuj:Packages!
  * @subpackage     Commands
  *
- * @author         Adam Kadlec <adam.kadlec@fastybird.com>
+ * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
  */
 final class UninstallCommand extends Command
 {
@@ -40,9 +40,9 @@ final class UninstallCommand extends Command
 	protected function configure()
 	{
 		$this
-			->setName('ipub:packages:install')
+			->setName('ipub:packages:uninstall')
 			->addArgument('package', Input\InputArgument::REQUIRED, 'Package name')
-			->setDescription('Install package.');
+			->setDescription('Uninstall package.');
 	}
 
 	/**

@@ -40,7 +40,7 @@ use IPub\Packages\Repository;
  * @package        iPublikuj:Packages!
  * @subpackage     DI
  *
- * @author         Adam Kadlec <adam.kadlec@fastybird.com>
+ * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
  */
 final class PackagesExtensions extends DI\CompilerExtension
 {
@@ -96,7 +96,7 @@ final class PackagesExtensions extends DI\CompilerExtension
 		 */
 
 		$builder->addDefinition($this->prefix('loader'))
-			->setClass(Loaders\Loader::CLASS_NAME, [
+			->setClass(Loaders\Loader::class, [
 				'packageFiles'    => $configuration['loader']['packageFiles'],
 				'metadataSources' => $configuration['sources'],
 				'vendorDir'       => $configuration['dirs']['vendorDir'],
@@ -104,7 +104,7 @@ final class PackagesExtensions extends DI\CompilerExtension
 			->addTag('cms.packages');
 
 		$repository = $builder->addDefinition($this->prefix('repository'))
-			->setClass(Repository\Repository::CLASS_NAME)
+			->setClass(Repository\Repository::class)
 			->addTag('cms.packages');
 
 		if ($configuration['path']) {
@@ -112,18 +112,18 @@ final class PackagesExtensions extends DI\CompilerExtension
 		}
 
 		$builder->addDefinition($this->prefix('manager'))
-			->setClass(Packages\PackagesManager::CLASS_NAME, [
+			->setClass(Packages\PackagesManager::class, [
 				'vendorDir' => $configuration['dirs']['vendorDir'],
 				'configDir' => $configuration['dirs']['configDir'],
 			])
 			->addTag('cms.packages');
 
 		$builder->addDefinition($this->prefix('pathResolver'))
-			->setClass(Helpers\PathResolver::CLASS_NAME)
+			->setClass(Helpers\PathResolver::class)
 			->addTag('cms.packages');
 
 		$builder->addDefinition($this->prefix('scripts.configuration'))
-			->setClass(Packages\Scripts\ConfigurationScript::CLASS_NAME, [
+			->setClass(Packages\Scripts\ConfigurationScript::class, [
 				'configDir'  => $configuration['dirs']['configDir'],
 				'configFile' => $configuration['configFile'],
 			])
@@ -159,7 +159,7 @@ final class PackagesExtensions extends DI\CompilerExtension
 		// Get packages manager
 		$manager = $builder->getDefinition($this->prefix('manager'));
 
-		foreach ($builder->findByType(Packages\Scripts\IScript::INTERFACE_NAME) as $serviceDefinition) {
+		foreach ($builder->findByType(Packages\Scripts\IScript::class) as $serviceDefinition) {
 			$manager->addSetup('addScript', [$serviceDefinition->getClass(), $serviceDefinition]);
 		}
 	}
@@ -167,6 +167,8 @@ final class PackagesExtensions extends DI\CompilerExtension
 	/**
 	 * @param Nette\Configurator $config
 	 * @param string $extensionName
+	 * 
+	 * @return void
 	 */
 	public static function register(Nette\Configurator $config, string $extensionName = 'packages')
 	{

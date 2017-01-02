@@ -12,6 +12,8 @@
  * @date           21.06.16
  */
 
+declare(strict_types = 1);
+
 namespace IPub\Packages\Exceptions;
 
 use Nette;

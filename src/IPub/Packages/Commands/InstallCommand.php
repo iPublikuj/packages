@@ -30,7 +30,7 @@ use IPub\Packages\Exceptions;
  * @package        iPublikuj:Packages!
  * @subpackage     Commands
  *
- * @author         Adam Kadlec <adam.kadlec@fastybird.com>
+ * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
  */
 final class InstallCommand extends Command
 {

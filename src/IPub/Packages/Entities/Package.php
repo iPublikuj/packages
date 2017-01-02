@@ -28,7 +28,7 @@ use IPub\Packages\Exceptions;
  * @package        iPublikuj:Packages!
  * @subpackage     Entities
  *
- * @author         Adam Kadlec <adam.kadlec@fastybird.com>
+ * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
  */
 abstract class Package extends Nette\Object implements IPackage
 {
@@ -76,7 +76,7 @@ abstract class Package extends Nette\Object implements IPackage
 	/**
 	 * {@inheritdoc}
 	 */
-	public function getDescription() : string
+	public function getDescription()
 	{
 		return $this->composerData['description'];
 	}
@@ -94,7 +94,7 @@ abstract class Package extends Nette\Object implements IPackage
 	 */
 	public function getType() : string
 	{
-		return $this->composerData['type'];
+		return isset($this->composerData['type']) ? $this->composerData['type'] : 'undefined';
 	}
 
 	/**
@@ -230,6 +230,20 @@ abstract class Package extends Nette\Object implements IPackage
 	/**
 	 * {@inheritdoc}
 	 */
+	public function getExtra() : Utils\ArrayHash
+	{
+		$data = [];
+
+		if (isset($this->composerData['extra'])) {
+			$data = $this->composerData['extra'];
+		}
+
+		return Utils\ArrayHash::from($data);
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
 	public function getConfiguration() : Utils\ArrayHash
 	{
 		$data = [];
@@ -268,7 +282,9 @@ abstract class Package extends Nette\Object implements IPackage
 	 */
 	public function getPath() : string
 	{
-		return dirname($this->getReflection()->getFileName());
+		$reflectionClass = new \ReflectionClass($this);
+
+		return dirname($reflectionClass->getFileName());
 	}
 
 	/**

@@ -30,7 +30,7 @@ use IPub\Packages\Entities;
  * @package      iPublikuj:Packages!
  * @subpackage   Scripts
  *
- * @author       Adam Kadlec <adam.kadlec@fastybird.com>
+ * @author       Adam Kadlec <adam.kadlec@ipublikuj.eu>
  */
 final class ConfigurationScript implements IScript
 {

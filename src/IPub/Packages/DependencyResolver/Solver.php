@@ -31,7 +31,7 @@ use IPub\Packages\Exceptions;
  * @subpackage     DependencyResolver
  *
  * @author         Josef Kříž <pepakriz@gmail.com>
- * @author         Adam Kadlec <adam.kadlec@fastybird.com>
+ * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
  */
 class Solver
 {

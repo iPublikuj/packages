@@ -26,15 +26,10 @@ use IPub\Packages\Entities;
  * @package        iPublikuj:Packages!
  * @subpackage     common
  *
- * @author         Adam Kadlec <adam.kadlec@fastybird.com>
+ * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
  */
 interface IPackagesManager
 {
-	/**
-	 * Define interface name
-	 */
-	const INTERFACE_NAME = __CLASS__;
-
 	/**
 	 * @param Entities\IPackage $package
 	 *

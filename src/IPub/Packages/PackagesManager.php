@@ -27,7 +27,6 @@ use IPub\Packages\Exceptions;
 use IPub\Packages\Installers;
 use IPub\Packages\Repository;
 use IPub\Packages\Scripts;
-use Tracy\Debugger;
 
 /**
  * Packages manager
@@ -35,7 +34,7 @@ use Tracy\Debugger;
  * @package        iPublikuj:Packages!
  * @subpackage     common
  *
- * @author         Adam Kadlec <adam.kadlec@fastybird.com>
+ * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
  *
  * @method onEnable(PackagesManager $manager, Entities\IPackage $package)
  * @method onDisable(PackagesManager $manager, Entities\IPackage $package)
@@ -47,11 +46,6 @@ use Tracy\Debugger;
  */
 final class PackagesManager extends Nette\Object implements IPackagesManager
 {
-	/**
-	 * Define class name
-	 */
-	const CLASS_NAME = __CLASS__;
-
 	/**
 	 * Define package metadata keys
 	 */
@@ -440,7 +434,7 @@ final class PackagesManager extends Nette\Object implements IPackagesManager
 				$installer = $this->getScript($class);
 				$installer->enable($package);
 
-			} catch (\Exception $e) {
+			} catch (\Exception $ex) {
 				foreach ($package->getScripts() as $class2) {
 					if ($class === $class2) {
 						break;
@@ -450,7 +444,7 @@ final class PackagesManager extends Nette\Object implements IPackagesManager
 					$installer->disable($package);
 				}
 
-				throw new Exceptions\InvalidStateException($e->getMessage());
+				throw new Exceptions\InvalidStateException($ex->getMessage());
 			}
 		}
 

@@ -22,7 +22,7 @@ namespace IPub\Packages\Entities;
  * @package        iPublikuj:Packages!
  * @subpackage     Entities
  *
- * @author         Adam Kadlec <adam.kadlec@fastybird.com>
+ * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
  */
 final class VirtualPackage extends Package
 {

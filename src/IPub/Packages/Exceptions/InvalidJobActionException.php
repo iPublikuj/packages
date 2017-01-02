@@ -12,6 +12,8 @@
  * @date           12.07.16
  */
 
+declare(strict_types = 1);
+
 namespace IPub\Packages\Exceptions;
 
 class InvalidJobActionException extends InvalidArgumentException

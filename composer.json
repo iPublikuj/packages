@@ -47,5 +47,5 @@
 		}
 	},
 
-	"bin": ["bin/package-manager", "bin/package-manager.php"]
+	"bin": ["bin/packages-manager", "bin/packages-manager.php"]
 }

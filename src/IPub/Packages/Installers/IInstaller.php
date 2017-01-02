@@ -22,15 +22,10 @@ namespace IPub\Packages\Installers;
  * @package        iPublikuj:Packages!
  * @subpackage     Installers
  *
- * @author         Adam Kadlec <adam.kadlec@fastybird.com>
+ * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
  */
 interface IInstaller
 {
-	/**
-	 * Define interface name
-	 */
-	const INTERFACE_NAME = __CLASS__;
-
 	/**
 	 * @param string|array $name
 	 *

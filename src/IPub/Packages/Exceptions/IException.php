@@ -12,6 +12,8 @@
  * @date           27.03.15
  */
 
+declare(strict_types = 1);
+
 namespace IPub\Packages\Exceptions;
 
 interface IException

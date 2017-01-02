@@ -25,7 +25,7 @@ use Nette\Utils;
  * @package        iPublikuj:Packages!
  * @subpackage     Entities
  *
- * @author         Adam Kadlec <adam.kadlec@fastybird.com>
+ * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
  */
 interface IPackage
 {
@@ -62,7 +62,7 @@ interface IPackage
 	/**
 	 * @return string
 	 */
-	function getDescription() : string;
+	function getDescription();
 
 	/**
 	 * @return string
@@ -118,6 +118,11 @@ interface IPackage
 	 * @return Utils\ArrayHash
 	 */
 	function getAutoload() : Utils\ArrayHash;
+
+	/**
+	 * @return Utils\ArrayHash
+	 */
+	public function getExtra() : Utils\ArrayHash;
 
 	/**
 	 * @return Utils\ArrayHash

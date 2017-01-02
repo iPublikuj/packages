@@ -20,11 +20,13 @@ use Composer;
 use Composer\Semver;
 
 use Nette;
+use Nette\DI;
 use Nette\Utils;
 
 use IPub;
 use IPub\Packages\Entities;
 use IPub\Packages\Exceptions;
+use Tracy\Debugger;
 
 /**
  * Package loader
@@ -32,15 +34,10 @@ use IPub\Packages\Exceptions;
  * @package        iPublikuj:Packages!
  * @subpackage     Loaders
  *
- * @author         Adam Kadlec <adam.kadlec@fastybird.com>
+ * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
  */
 final class Loader implements ILoader
 {
-	/**
-	 * Define class name
-	 */
-	const CLASS_NAME = __CLASS__;
-
 	/**
 	 * @var string[]
 	 */
@@ -67,16 +64,24 @@ final class Loader implements ILoader
 	private $versionParser;
 
 	/**
+	 * @var DI\Container
+	 */
+	private $container;
+
+	/**
 	 * @param array $packageFiles
 	 * @param array $metadataSources
-	 * @param string $vendorDir
+	 * @param $vendorDir
+	 * @param DI\Container $container
 	 */
-	public function __construct(array $packageFiles = [], array $metadataSources = [], $vendorDir)
+	public function __construct(array $packageFiles = [], array $metadataSources = [], $vendorDir, DI\Container $container)
 	{
 		$this->packageFiles = $packageFiles;
 		$this->metadataSources = $metadataSources;
 		$this->vendorDir = $vendorDir;
 		$this->versionParser = new Semver\VersionParser;
+
+		$this->container = $container;
 	}
 
 	/**
@@ -114,7 +119,9 @@ final class Loader implements ILoader
 
 				include_once $path . DIRECTORY_SEPARATOR . $packageFile;
 
-				return new $class($data);
+				$package = $this->container->createInstance($class, [$data]);
+
+				return $package;
 			}
 		}
 
@@ -238,11 +245,8 @@ final class Loader implements ILoader
 			) {
 				$class_name = $tokens[$i][1];
 
-				if (!isset($classes[$namespace])) {
-					$classes[$namespace] = [];
-				}
 
-				$classes[$namespace][] = $class_name;
+				$classes[] = $namespace . '\\' . $class_name;
 			}
 		}
 
