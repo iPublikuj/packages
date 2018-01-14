@@ -62,7 +62,9 @@ abstract class Package extends Nette\Object implements IPackage
 	 */
 	public function getTitle()
 	{
-		return isset($this->composerData['title']) ? $this->composerData['title'] : NULL;
+		$extra = $this->getExtra();
+
+		return $extra->offsetExists('title') ? $extra->offsetGet('title') : $this->getName();
 	}
 
 	/**

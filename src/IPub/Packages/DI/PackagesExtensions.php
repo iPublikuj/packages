@@ -63,7 +63,7 @@ final class PackagesExtensions extends DI\CompilerExtension
 			],
 		],
 		'sources'    => [
-			'https://raw.github.com/ipublikuj/packages-metadata/master/metadata.json'
+			/*'https://raw.github.com/ipublikuj/packages-metadata/master/metadata.json'*/
 		],
 	];
 
