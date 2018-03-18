@@ -3,8 +3,8 @@
  * PackagesExtensions.php
  *
  * @copyright      More in license.md
- * @license        http://www.ipublikuj.eu
- * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @license        https://www.ipublikuj.eu
+ * @author         Adam Kadlec https://www.ipublikuj.eu
  * @package        iPublikuj:Packages!
  * @subpackage     DI
  * @since          1.0.0
@@ -24,7 +24,6 @@ use Nette\PhpGenerator as Code;
 
 use Kdyby\Console;
 
-use IPub;
 use IPub\Packages;
 use IPub\Packages\Commands;
 use IPub\Packages\Entities;
@@ -56,21 +55,21 @@ final class PackagesExtensions extends DI\CompilerExtension
 			'vendorDir' => '%appDir%/../vendor',     // Path to composer vendor folder
 			'tempDir'   => '%tempDir%',              // Path to temporary folder
 		],
-		'configFile' => 'config.neon',                // Filename with enabled packages extensions
+		'configFile' => 'config.neon',               // Filename with enabled packages extensions
 		'loader'     => [
 			'packageFiles' => [
 				'package.php',
 			],
 		],
 		'sources'    => [
-			/*'https://raw.github.com/ipublikuj/packages-metadata/master/metadata.json'*/
+			'https://raw.github.com/ipublikuj/packages-metadata/master/metadata.json'
 		],
 	];
 
 	/**
 	 * @return void
 	 */
-	public function loadConfiguration()
+	public function loadConfiguration() : void
 	{
 		// Get container builder
 		$builder = $this->getContainerBuilder();
@@ -96,7 +95,8 @@ final class PackagesExtensions extends DI\CompilerExtension
 		 */
 
 		$builder->addDefinition($this->prefix('loader'))
-			->setClass(Loaders\Loader::class, [
+			->setType(Loaders\Loader::class)
+			->setArguments([
 				'packageFiles'    => $configuration['loader']['packageFiles'],
 				'metadataSources' => $configuration['sources'],
 				'vendorDir'       => $configuration['dirs']['vendorDir'],
@@ -104,7 +104,7 @@ final class PackagesExtensions extends DI\CompilerExtension
 			->addTag('cms.packages');
 
 		$repository = $builder->addDefinition($this->prefix('repository'))
-			->setClass(Repository\Repository::class)
+			->setType(Repository\Repository::class)
 			->addTag('cms.packages');
 
 		if ($configuration['path']) {
@@ -112,18 +112,20 @@ final class PackagesExtensions extends DI\CompilerExtension
 		}
 
 		$builder->addDefinition($this->prefix('manager'))
-			->setClass(Packages\PackagesManager::class, [
+			->setType(Packages\PackagesManager::class)
+			->setArguments([
 				'vendorDir' => $configuration['dirs']['vendorDir'],
 				'configDir' => $configuration['dirs']['configDir'],
 			])
 			->addTag('cms.packages');
 
 		$builder->addDefinition($this->prefix('pathResolver'))
-			->setClass(Helpers\PathResolver::class)
+			->setType(Helpers\PathResolver::class)
 			->addTag('cms.packages');
 
 		$builder->addDefinition($this->prefix('scripts.configuration'))
-			->setClass(Packages\Scripts\ConfigurationScript::class, [
+			->setType(Packages\Scripts\ConfigurationScript::class)
+			->setArguments([
 				'configDir'  => $configuration['dirs']['configDir'],
 				'configFile' => $configuration['configFile'],
 			])
@@ -141,7 +143,7 @@ final class PackagesExtensions extends DI\CompilerExtension
 
 		foreach ($commands as $name => $cmd) {
 			$builder->addDefinition($this->prefix('commands' . lcfirst($name)))
-				->setClass($cmd)
+				->setType($cmd)
 				->addTag(Console\DI\ConsoleExtension::TAG_COMMAND);
 		}
 	}
@@ -149,7 +151,7 @@ final class PackagesExtensions extends DI\CompilerExtension
 	/**
 	 * {@inheritdoc}
 	 */
-	public function beforeCompile()
+	public function beforeCompile() : void
 	{
 		parent::beforeCompile();
 
@@ -160,17 +162,17 @@ final class PackagesExtensions extends DI\CompilerExtension
 		$manager = $builder->getDefinition($this->prefix('manager'));
 
 		foreach ($builder->findByType(Packages\Scripts\IScript::class) as $serviceDefinition) {
-			$manager->addSetup('addScript', [$serviceDefinition->getClass(), $serviceDefinition]);
+			$manager->addSetup('addScript', [$serviceDefinition->getType(), $serviceDefinition]);
 		}
 	}
 
 	/**
 	 * @param Nette\Configurator $config
 	 * @param string $extensionName
-	 * 
+	 *
 	 * @return void
 	 */
-	public static function register(Nette\Configurator $config, string $extensionName = 'packages')
+	public static function register(Nette\Configurator $config, string $extensionName = 'packages') : void
 	{
 		$config->onCompile[] = function (Nette\Configurator $config, Nette\DI\Compiler $compiler) use ($extensionName) {
 			$compiler->addExtension($extensionName, new PackagesExtensions());

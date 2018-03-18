@@ -3,8 +3,8 @@
  * IPackage.php
  *
  * @copyright      More in license.md
- * @license        http://www.ipublikuj.eu
- * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @license        https://www.ipublikuj.eu
+ * @author         Adam Kadlec https://www.ipublikuj.eu
  * @package        iPublikuj:Packages!
  * @subpackage     Entities
  * @since          1.0.0
@@ -32,9 +32,9 @@ interface IPackage
 	/**
 	 * Define statuses
 	 */
-	const STATE_ENABLED = 'enabled';
-	const STATE_DISABLED = 'disabled';
-	const STATE_UNREGISTERED = 'unregistered';
+	public const STATE_ENABLED = 'enabled';
+	public const STATE_DISABLED = 'disabled';
+	public const STATE_UNREGISTERED = 'unregistered';
 
 	/**
 	 * List of available statuses
@@ -50,9 +50,9 @@ interface IPackage
 	function getName() : string;
 
 	/**
-	 * @return string|NULL
+	 * @return string
 	 */
-	function getTitle();
+	function getTitle() : string;
 
 	/**
 	 * @return bool
@@ -60,9 +60,9 @@ interface IPackage
 	function hasTitle() : bool;
 
 	/**
-	 * @return string
+	 * @return string|NULL
 	 */
-	function getDescription();
+	function getDescription() : ?string;
 
 	/**
 	 * @return string
@@ -82,12 +82,12 @@ interface IPackage
 	/**
 	 * @return string|NULL
 	 */
-	function getHomepage();
+	function getHomepage() : ?string;
 
 	/**
-	 * @return Utils\DateTime|NULL
+	 * @return \DateTimeInterface|NULL
 	 */
-	function getReleaseDate();
+	function getReleaseDate() : ?\DateTimeInterface;
 
 	/**
 	 * @return Utils\ArrayHash
@@ -102,7 +102,7 @@ interface IPackage
 	/**
 	 * @return array|NULL
 	 */
-	function getSupport();
+	function getSupport() : ?array;
 
 	/**
 	 * @return string[]
@@ -137,7 +137,7 @@ interface IPackage
 	/**
 	 * @return string
 	 */
-	function getUniqueName();
+	function getUniqueName() : string;
 
 	/**
 	 * @return string

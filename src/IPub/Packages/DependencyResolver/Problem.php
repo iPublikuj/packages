@@ -3,8 +3,8 @@
  * Problem.php
  *
  * @copyright      More in license.md
- * @license        http://www.ipublikuj.eu
- * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @license        https://www.ipublikuj.eu
+ * @author         Adam Kadlec https://www.ipublikuj.eu
  * @package        iPublikuj:Packages!
  * @subpackage     DependencyResolver
  * @since          2.0.0
@@ -16,8 +16,6 @@ declare(strict_types = 1);
 
 namespace IPub\Packages\DependencyResolver;
 
-use IPub;
-use IPub\Packages;
 use IPub\Packages\Exceptions;
 
 /**
@@ -38,8 +36,10 @@ class Problem
 
 	/**
 	 * @param Job $job
+	 *
+	 * @return void
 	 */
-	public function addSolution(Job $job)
+	public function addSolution(Job $job) : void
 	{
 		if ($this->hasSolution($job)) {
 			throw new Exceptions\InvalidArgumentException(sprintf(

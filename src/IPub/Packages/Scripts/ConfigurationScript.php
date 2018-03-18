@@ -3,8 +3,8 @@
  * ConfigurationScript.php
  *
  * @copyright      More in license.md
- * @license        http://www.ipublikuj.eu
- * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @license        https://www.ipublikuj.eu
+ * @author         Adam Kadlec https://www.ipublikuj.eu
  * @package        iPublikuj:Packages!
  * @subpackage     Scripts
  * @since          2.0.0
@@ -16,12 +16,9 @@ declare(strict_types = 1);
 
 namespace IPub\Packages\Scripts;
 
-use Nette;
 use Nette\Neon;
 use Nette\Utils;
 
-use IPub;
-use IPub\Packages;
 use IPub\Packages\Entities;
 
 /**
@@ -34,11 +31,6 @@ use IPub\Packages\Entities;
  */
 final class ConfigurationScript implements IScript
 {
-	/**
-	 * Define class name
-	 */
-	const CLASS_NAME = __CLASS__;
-
 	/**
 	 * @var string[]
 	 */
@@ -67,7 +59,7 @@ final class ConfigurationScript implements IScript
 	/**
 	 * {@inheritdoc}
 	 */
-	public function install(Entities\IPackage $package)
+	public function install(Entities\IPackage $package) : void
 	{
 		// Do nothing here
 	}
@@ -75,7 +67,7 @@ final class ConfigurationScript implements IScript
 	/**
 	 * {@inheritdoc}
 	 */
-	public function uninstall(Entities\IPackage $package)
+	public function uninstall(Entities\IPackage $package) : void
 	{
 		// Do nothing here
 	}
@@ -83,7 +75,7 @@ final class ConfigurationScript implements IScript
 	/**
 	 * {@inheritdoc}
 	 */
-	public function enable(Entities\IPackage $package)
+	public function enable(Entities\IPackage $package) : void
 	{
 		try {
 			$configuration = $package->getConfiguration();
@@ -120,7 +112,7 @@ final class ConfigurationScript implements IScript
 	/**
 	 * {@inheritdoc}
 	 */
-	public function disable(Entities\IPackage $package)
+	public function disable(Entities\IPackage $package) : void
 	{
 		$configuration = $package->getConfiguration();
 
@@ -206,7 +198,7 @@ final class ConfigurationScript implements IScript
 	/**
 	 * @param mixed[] $data
 	 */
-	private function saveConfig(array $data)
+	private function saveConfig(array $data) : void
 	{
 		file_put_contents($this->getConfigPath(), Neon\Neon::encode($data, Neon\Neon::BLOCK));
 	}

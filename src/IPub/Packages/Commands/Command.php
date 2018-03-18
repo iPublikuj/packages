@@ -3,8 +3,8 @@
  * Command.php
  *
  * @copyright      More in license.md
- * @license        http://www.ipublikuj.eu
- * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @license        https://www.ipublikuj.eu
+ * @author         Adam Kadlec https://www.ipublikuj.eu
  * @package        iPublikuj:Packages!
  * @subpackage     Commands
  * @since          2.0.0
@@ -18,8 +18,6 @@ namespace IPub\Packages\Commands;
 
 use Symfony\Component\Console;
 
-use IPub;
-use IPub\Packages;
 use IPub\Packages\Repository;
 
 /**

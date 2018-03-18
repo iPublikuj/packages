@@ -3,8 +3,8 @@
  * Repository.php
  *
  * @copyright      More in license.md
- * @license        http://www.ipublikuj.eu
- * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @license        https://www.ipublikuj.eu
+ * @author         Adam Kadlec https://www.ipublikuj.eu
  * @package        iPublikuj:Packages!
  * @subpackage     Repository
  * @since          1.0.0
@@ -19,7 +19,6 @@ namespace IPub\Packages\Repository;
 use Nette;
 use Nette\Utils;
 
-use IPub;
 use IPub\Packages;
 use IPub\Packages\Caching;
 use IPub\Packages\Entities;
@@ -35,6 +34,11 @@ use IPub\Packages\Loaders;
  */
 final class Repository implements IRepository
 {
+	/**
+	 * Implement nette smart magic
+	 */
+	use Nette\SmartObject;
+
 	/**
 	 * @var array
 	 */
@@ -146,7 +150,7 @@ final class Repository implements IRepository
 	/**
 	 * {@inheritdoc}
 	 */
-	public function reload()
+	public function reload() : void
 	{
 		$this->initialize();
 	}
@@ -162,7 +166,7 @@ final class Repository implements IRepository
 	/**
 	 * {@inheritdoc}
 	 */
-	public function addPath($path)
+	public function addPath($path) : void
 	{
 		if (!is_array($path)) {
 			$path = [$path];

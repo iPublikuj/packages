@@ -3,8 +3,8 @@
  * Solver.php
  *
  * @copyright      More in license.md
- * @license        http://www.ipublikuj.eu
- * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @license        https://www.ipublikuj.eu
+ * @author         Adam Kadlec https://www.ipublikuj.eu
  * @package        iPublikuj:Packages!
  * @subpackage     DependencyResolver
  * @since          2.0.0
@@ -16,11 +16,8 @@ declare(strict_types = 1);
 
 namespace IPub\Packages\DependencyResolver;
 
-use Nette;
 use Nette\Utils;
 
-use IPub;
-use IPub\Packages;
 use IPub\Packages\Entities;
 use IPub\Packages\Exceptions;
 
@@ -57,7 +54,7 @@ class Solver
 		$this->packages = $repository->getPackages();
 
 		// Get all enabled packages
-		$this->enabledPackages = $repository->filterPackages(function (Entities\IPackage $package) use ($manager) {
+		$this->enabledPackages = $repository->filterPackages(function (Entities\IPackage $package) use ($manager) : bool {
 			return $manager->getStatus($package) === Entities\IPackage::STATE_ENABLED;
 		});
 	}
@@ -65,8 +62,10 @@ class Solver
 	/**
 	 * @param Entities\IPackage $package
 	 * @param Problem|NULL $problem
+	 *
+	 * @return void
 	 */
-	public function testEnable(Entities\IPackage $package, Problem $problem = NULL)
+	public function testEnable(Entities\IPackage $package, ?Problem $problem = NULL) : void
 	{
 		foreach ($package->getRequire() as $name) {
 			// Check if required package is enabled...
@@ -96,9 +95,11 @@ class Solver
 
 	/**
 	 * @param Entities\IPackage $package
-	 * @param Problem $problem
+	 * @param Problem|NULL $problem
+	 *
+	 * @return void
 	 */
-	public function testDisable(Entities\IPackage $package, Problem $problem = NULL)
+	public function testDisable(Entities\IPackage $package, ?Problem $problem = NULL) : void
 	{
 		foreach ($this->enabledPackages as $sourcePackage) {
 			if ($sourcePackage->getName() === $package->getName()) {

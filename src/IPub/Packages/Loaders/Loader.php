@@ -3,8 +3,8 @@
  * Loader.php
  *
  * @copyright      More in license.md
- * @license        http://www.ipublikuj.eu
- * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @license        https://www.ipublikuj.eu
+ * @author         Adam Kadlec https://www.ipublikuj.eu
  * @package        iPublikuj:Packages!
  * @subpackage     Loaders
  * @since          1.0.0
@@ -23,10 +23,8 @@ use Nette;
 use Nette\DI;
 use Nette\Utils;
 
-use IPub;
 use IPub\Packages\Entities;
 use IPub\Packages\Exceptions;
-use Tracy\Debugger;
 
 /**
  * Package loader
@@ -38,6 +36,11 @@ use Tracy\Debugger;
  */
 final class Loader implements ILoader
 {
+	/**
+	 * Implement nette smart magic
+	 */
+	use Nette\SmartObject;
+
 	/**
 	 * @var string[]
 	 */
@@ -127,7 +130,6 @@ final class Loader implements ILoader
 
 		return new Entities\VirtualPackage($data, $path);
 	}
-
 
 	/**
 	 * @param string $file

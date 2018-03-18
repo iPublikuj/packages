@@ -3,8 +3,8 @@
  * PackagesManager.php
  *
  * @copyright      More in license.md
- * @license        http://www.ipublikuj.eu
- * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @license        https://www.ipublikuj.eu
+ * @author         Adam Kadlec https://www.ipublikuj.eu
  * @package        iPublikuj:Packages!
  * @subpackage     common
  * @since          1.0.0
@@ -19,7 +19,6 @@ namespace IPub\Packages;
 use Nette;
 use Nette\Utils;
 
-use IPub;
 use IPub\Packages;
 use IPub\Packages\DependencyResolver;
 use IPub\Packages\Entities;
@@ -44,21 +43,26 @@ use IPub\Packages\Scripts;
  * @method onRegister(PackagesManager $manager, Entities\IPackage $package)
  * @method onUnregister(PackagesManager $manager, Entities\IPackage $package)
  */
-final class PackagesManager extends Nette\Object implements IPackagesManager
+final class PackagesManager implements IPackagesManager
 {
+	/**
+	 * Implement nette smart magic
+	 */
+	use Nette\SmartObject;
+
 	/**
 	 * Define package metadata keys
 	 */
-	const PACKAGE_STATUS = 'status';
-	const PACKAGE_METADATA = 'metadata';
+	private const PACKAGE_STATUS = 'status';
+	private const PACKAGE_METADATA = 'metadata';
 
 	/**
 	 * Define actions
 	 */
-	const ACTION_ENABLE = 'enable';
-	const ACTION_DISABLE = 'disable';
-	const ACTION_REGISTER = 'register';
-	const ACTION_UNREGISTER = 'unregister';
+	private const ACTION_ENABLE = 'enable';
+	private const ACTION_DISABLE = 'disable';
+	private const ACTION_REGISTER = 'register';
+	private const ACTION_UNREGISTER = 'unregister';
 
 	/**
 	 * @var callable[]
@@ -206,7 +210,7 @@ final class PackagesManager extends Nette\Object implements IPackagesManager
 	public function comparePackages(Entities\IPackage $first, Entities\IPackage $second, string $operator = '==') : bool
 	{
 		return strtolower($first->getName()) === strtolower($second->getName()) &&
-		version_compare(strtolower($this->getVersion($first)), strtolower($this->getVersion($second)), $operator);
+			version_compare(strtolower($this->getVersion($first)), strtolower($this->getVersion($second)), $operator);
 	}
 
 	/**
@@ -247,7 +251,7 @@ final class PackagesManager extends Nette\Object implements IPackagesManager
 
 		while (TRUE) {
 			/** @var Entities\IPackage[] $packages */
-			$packages = $this->repository->filterPackages(function (Entities\IPackage $package) {
+			$packages = $this->repository->filterPackages(function (Entities\IPackage $package) : bool {
 				return $this->getStatus($package) === Entities\IPackage::STATE_DISABLED;
 			});
 
@@ -309,7 +313,7 @@ final class PackagesManager extends Nette\Object implements IPackagesManager
 	/**
 	 * {@inheritdoc}
 	 */
-	public function install(string $name)
+	public function install(string $name) : void
 	{
 		// Check if installer service is created
 		if ($this->installer === NULL) {
@@ -359,7 +363,7 @@ final class PackagesManager extends Nette\Object implements IPackagesManager
 	/**
 	 * {@inheritdoc}
 	 */
-	public function uninstall(string $name)
+	public function uninstall(string $name) : void
 	{
 		// Check if installer service is created
 		if ($this->installer === NULL) {
@@ -420,7 +424,7 @@ final class PackagesManager extends Nette\Object implements IPackagesManager
 	/**
 	 * {@inheritdoc}
 	 */
-	public function enable(Entities\IPackage $package)
+	public function enable(Entities\IPackage $package) : void
 	{
 		if ($this->getStatus($package) === Entities\IPackage::STATE_ENABLED) {
 			throw new Exceptions\InvalidArgumentException(sprintf('Package \'%s\' is already enabled', $package->getName()));
@@ -456,7 +460,7 @@ final class PackagesManager extends Nette\Object implements IPackagesManager
 	/**
 	 * {@inheritdoc}
 	 */
-	public function disable(Entities\IPackage $package)
+	public function disable(Entities\IPackage $package) : void
 	{
 		if ($this->getStatus($package) === Entities\IPackage::STATE_DISABLED) {
 			throw new Exceptions\InvalidArgumentException(sprintf('Package \'%s\' is already disabled', $package->getName()));
@@ -518,8 +522,10 @@ final class PackagesManager extends Nette\Object implements IPackagesManager
 	/**
 	 * @param Entities\IPackage $package
 	 * @param string $state
+	 *
+	 * @return void
 	 */
-	private function register(Entities\IPackage $package, string $state = Entities\IPackage::STATE_DISABLED)
+	private function register(Entities\IPackage $package, string $state = Entities\IPackage::STATE_DISABLED) : void
 	{
 		$packagesConfig = $this->getPackagesConfig();
 
@@ -550,8 +556,10 @@ final class PackagesManager extends Nette\Object implements IPackagesManager
 
 	/**
 	 * @param Entities\IPackage $package
+	 *
+	 * @return void
 	 */
-	private function unregister(Entities\IPackage $package)
+	private function unregister(Entities\IPackage $package) : void
 	{
 		$packagesConfig = $this->getPackagesConfig();
 
@@ -566,8 +574,10 @@ final class PackagesManager extends Nette\Object implements IPackagesManager
 	/**
 	 * @param Entities\IPackage $package
 	 * @param string $status
+	 *
+	 * @return void
 	 */
-	private function setStatus(Entities\IPackage $package, string $status)
+	private function setStatus(Entities\IPackage $package, string $status) : void
 	{
 		if (!in_array($status, Entities\IPackage::STATUSES, TRUE)) {
 			throw new Exceptions\InvalidArgumentException(sprintf('Status \'%s\' not exists.', $status));
@@ -589,7 +599,7 @@ final class PackagesManager extends Nette\Object implements IPackagesManager
 	 * @param string $class
 	 *
 	 * @return Scripts\IScript
-	 * 
+	 *
 	 * @throws Exceptions\InvalidStateException
 	 */
 	private function getScript(string $class) : Scripts\IScript
@@ -616,7 +626,7 @@ final class PackagesManager extends Nette\Object implements IPackagesManager
 	/**
 	 * @return void
 	 */
-	private function createSolver()
+	private function createSolver() : void
 	{
 		$this->dependencySolver = new DependencyResolver\Solver($this->repository, $this);
 	}
@@ -641,10 +651,12 @@ final class PackagesManager extends Nette\Object implements IPackagesManager
 
 	/**
 	 * @param Utils\ArrayHash $packagesConfig
-	 * 
+	 *
+	 * @return void
+	 *
 	 * @throws Exceptions\NotWritableException
 	 */
-	private function savePackagesConfig(Utils\ArrayHash $packagesConfig)
+	private function savePackagesConfig(Utils\ArrayHash $packagesConfig) : void
 	{
 		$config = new Nette\DI\Config\Adapters\PhpAdapter;
 

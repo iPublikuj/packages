@@ -3,8 +3,8 @@
  * PathResolver.php
  *
  * @copyright      More in license.md
- * @license        http://www.ipublikuj.eu
- * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @license        https://www.ipublikuj.eu
+ * @author         Adam Kadlec https://www.ipublikuj.eu
  * @package        iPublikuj:Packages!
  * @subpackage     Helpers
  * @since          1.0.0
@@ -19,8 +19,6 @@ namespace IPub\Packages\Helpers;
 use Nette;
 use Nette\Utils;
 
-use IPub;
-use IPub\Packages;
 use IPub\Packages\Exceptions;
 use IPub\Packages\Repository;
 
@@ -32,8 +30,13 @@ use IPub\Packages\Repository;
  *
  * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
  */
-final class PathResolver extends Nette\Object
+final class PathResolver
 {
+	/**
+	 * Implement nette smart magic
+	 */
+	use Nette\SmartObject;
+
 	/**
 	 * @var Repository\IRepository
 	 */

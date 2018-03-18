@@ -3,8 +3,8 @@
  * IScript.php
  *
  * @copyright      More in license.md
- * @license        http://www.ipublikuj.eu
- * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @license        https://www.ipublikuj.eu
+ * @author         Adam Kadlec https://www.ipublikuj.eu
  * @package        iPublikuj:Packages!
  * @subpackage     Scripts
  * @since          2.0.0
@@ -16,8 +16,6 @@ declare(strict_types = 1);
 
 namespace IPub\Packages\Scripts;
 
-use IPub;
-use IPub\Packages;
 use IPub\Packages\Entities;
 
 /**
@@ -35,26 +33,26 @@ interface IScript
 	 *
 	 * @return void
 	 */
-	function install(Entities\IPackage $package);
+	function install(Entities\IPackage $package) : void;
 
 	/**
 	 * @param Entities\IPackage $package
 	 *
 	 * @return void
 	 */
-	function uninstall(Entities\IPackage $package);
+	function uninstall(Entities\IPackage $package) : void;
 
 	/**
 	 * @param Entities\IPackage $package
 	 *
 	 * @return void
 	 */
-	function enable(Entities\IPackage $package);
+	function enable(Entities\IPackage $package) : void;
 
 	/**
 	 * @param Entities\IPackage $package
 	 *
 	 * @return void
 	 */
-	function disable(Entities\IPackage $package);
+	function disable(Entities\IPackage $package) : void;
 }

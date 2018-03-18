@@ -3,8 +3,8 @@
  * IPackagesManager.php
  *
  * @copyright      More in license.md
- * @license        http://www.ipublikuj.eu
- * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @license        https://www.ipublikuj.eu
+ * @author         Adam Kadlec https://www.ipublikuj.eu
  * @package        iPublikuj:Packages!
  * @subpackage     common
  * @since          1.0.0
@@ -12,11 +12,12 @@
  * @date           13.03.16
  */
 
+declare(strict_types = 1);
+
 namespace IPub\Packages;
 
 use Nette;
 
-use IPub;
 use IPub\Packages;
 use IPub\Packages\Entities;
 
@@ -76,23 +77,31 @@ interface IPackagesManager
 
 	/**
 	 * @param string $name
+	 *
+	 * @return void
 	 */
-	function install(string $name);
+	function install(string $name) : void;
 
 	/**
 	 * @param string $name
+	 *
+	 * @return void
 	 */
-	function uninstall(string $name);
+	function uninstall(string $name) : void;
 
 	/**
 	 * @param Entities\IPackage $package
+	 *
+	 * @return void
 	 */
-	function enable(Entities\IPackage $package);
+	function enable(Entities\IPackage $package) : void;
 
 	/**
 	 * @param Entities\IPackage $package
+	 *
+	 * @return void
 	 */
-	function disable(Entities\IPackage $package);
+	function disable(Entities\IPackage $package) : void;
 
 	/**
 	 * @param Entities\IPackage $package

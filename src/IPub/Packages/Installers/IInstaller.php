@@ -3,8 +3,8 @@
  * IInstaller.php
  *
  * @copyright      More in license.md
- * @license        http://www.ipublikuj.eu
- * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @license        https://www.ipublikuj.eu
+ * @author         Adam Kadlec https://www.ipublikuj.eu
  * @package        iPublikuj:Packages!
  * @subpackage     Installers
  * @since          2.0.0
@@ -31,14 +31,14 @@ interface IInstaller
 	 *
 	 * @return void
 	 */
-	function install($name);
+	function install($name) : void;
 
 	/**
 	 * @param string|array $name
 	 *
 	 * @return void
 	 */
-	function uninstall($name);
+	function uninstall($name) : void;
 
 	/**
 	 * @param string|array $name

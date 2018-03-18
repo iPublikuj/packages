@@ -3,8 +3,8 @@
  * Package.php
  *
  * @copyright      More in license.md
- * @license        http://www.ipublikuj.eu
- * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @license        https://www.ipublikuj.eu
+ * @author         Adam Kadlec https://www.ipublikuj.eu
  * @package        iPublikuj:Packages!
  * @subpackage     Entities
  * @since          1.0.0
@@ -19,7 +19,6 @@ namespace IPub\Packages\Entities;
 use Nette;
 use Nette\Utils;
 
-use IPub;
 use IPub\Packages\Exceptions;
 
 /**
@@ -30,8 +29,13 @@ use IPub\Packages\Exceptions;
  *
  * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
  */
-abstract class Package extends Nette\Object implements IPackage
+abstract class Package implements IPackage
 {
+	/**
+	 * Implement nette smart magic
+	 */
+	use Nette\SmartObject;
+
 	/**
 	 * @var mixed
 	 */
@@ -45,7 +49,7 @@ abstract class Package extends Nette\Object implements IPackage
 		$this->composerData = $composerData;
 
 		if (!isset($composerData['name'])) {
-			throw new Exceptions\UnexpectedValueException('Unknown package has no name defined (' . json_encode($composerData) . ').');
+			throw new Exceptions\UnexpectedValueException('Unknown package, has no name defined (' . json_encode($composerData) . ').');
 		}
 	}
 
@@ -60,7 +64,7 @@ abstract class Package extends Nette\Object implements IPackage
 	/**
 	 * {@inheritdoc}
 	 */
-	public function getTitle()
+	public function getTitle() : string
 	{
 		$extra = $this->getExtra();
 
@@ -78,9 +82,9 @@ abstract class Package extends Nette\Object implements IPackage
 	/**
 	 * {@inheritdoc}
 	 */
-	public function getDescription()
+	public function getDescription() : ?string
 	{
-		return $this->composerData['description'];
+		return isset($this->composerData['description']) ? $this->composerData['description'] : NULL;
 	}
 
 	/**
@@ -118,7 +122,7 @@ abstract class Package extends Nette\Object implements IPackage
 	/**
 	 * {@inheritdoc}
 	 */
-	public function getHomepage()
+	public function getHomepage() : ?string
 	{
 		return isset($this->composerData['homepage']) ? $this->composerData['homepage'] : NULL;
 	}
@@ -126,7 +130,7 @@ abstract class Package extends Nette\Object implements IPackage
 	/**
 	 * {@inheritdoc}
 	 */
-	public function getReleaseDate()
+	public function getReleaseDate() : ?\DateTimeInterface
 	{
 		if (isset($this->composerData['time'])) {
 			try {
@@ -174,7 +178,7 @@ abstract class Package extends Nette\Object implements IPackage
 	/**
 	 * {@inheritdoc}
 	 */
-	public function getSupport()
+	public function getSupport() : ?array
 	{
 		return isset($this->composerData['support']) ? $this->composerData['support'] : NULL;
 	}

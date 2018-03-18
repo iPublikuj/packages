@@ -3,8 +3,8 @@
  * Job.php
  *
  * @copyright      More in license.md
- * @license        http://www.ipublikuj.eu
- * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @license        https://www.ipublikuj.eu
+ * @author         Adam Kadlec https://www.ipublikuj.eu
  * @package        iPublikuj:Packages!
  * @subpackage     DependencyResolver
  * @since          2.0.0
@@ -16,8 +16,6 @@ declare(strict_types = 1);
 
 namespace IPub\Packages\DependencyResolver;
 
-use IPub;
-use IPub\Packages;
 use IPub\Packages\Entities;
 use IPub\Packages\Exceptions;
 
@@ -35,8 +33,8 @@ class Job
 	/**
 	 * Define actions
 	 */
-	const ACTION_ENABLE = 'enable';
-	const ACTION_DISABLE = 'disable';
+	public const ACTION_ENABLE = 'enable';
+	public const ACTION_DISABLE = 'disable';
 
 	/**
 	 * List of available statuses
