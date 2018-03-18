@@ -18,6 +18,7 @@ namespace IPub\Packages\Commands;
 
 use Symfony\Component\Console;
 
+use IPub\Packages;
 use IPub\Packages\Repository;
 
 /**
