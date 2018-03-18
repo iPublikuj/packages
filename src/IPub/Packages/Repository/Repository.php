@@ -4,7 +4,7 @@
  *
  * @copyright      More in license.md
  * @license        https://www.ipublikuj.eu
- * @author         Adam Kadlec https://www.ipublikuj.eu
+ * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
  * @package        iPublikuj:Packages!
  * @subpackage     Repository
  * @since          1.0.0
@@ -17,10 +17,7 @@ declare(strict_types = 1);
 namespace IPub\Packages\Repository;
 
 use Nette;
-use Nette\Utils;
 
-use IPub\Packages;
-use IPub\Packages\Caching;
 use IPub\Packages\Entities;
 use IPub\Packages\Loaders;
 

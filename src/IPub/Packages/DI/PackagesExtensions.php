@@ -4,7 +4,7 @@
  *
  * @copyright      More in license.md
  * @license        https://www.ipublikuj.eu
- * @author         Adam Kadlec https://www.ipublikuj.eu
+ * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
  * @package        iPublikuj:Packages!
  * @subpackage     DI
  * @since          1.0.0
@@ -18,18 +18,12 @@ namespace IPub\Packages\DI;
 
 use Nette;
 use Nette\DI;
-use Nette\Utils;
-use Nette\Neon;
-use Nette\PhpGenerator as Code;
 
 use Kdyby\Console;
 
 use IPub\Packages;
 use IPub\Packages\Commands;
-use IPub\Packages\Entities;
-use IPub\Packages\Exceptions;
 use IPub\Packages\Helpers;
-use IPub\Packages\Installers;
 use IPub\Packages\Loaders;
 use IPub\Packages\Repository;
 

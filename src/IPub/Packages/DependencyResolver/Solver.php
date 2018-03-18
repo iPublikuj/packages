@@ -4,7 +4,7 @@
  *
  * @copyright      More in license.md
  * @license        https://www.ipublikuj.eu
- * @author         Adam Kadlec https://www.ipublikuj.eu
+ * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
  * @package        iPublikuj:Packages!
  * @subpackage     DependencyResolver
  * @since          2.0.0
@@ -16,10 +16,10 @@ declare(strict_types = 1);
 
 namespace IPub\Packages\DependencyResolver;
 
-use Nette\Utils;
-
+use IPub\Packages;
 use IPub\Packages\Entities;
 use IPub\Packages\Exceptions;
+use IPub\Packages\Repository;
 
 /**
  * Dependency solver
@@ -43,11 +43,11 @@ class Solver
 	private $enabledPackages;
 
 	/**
-	 * @param Packages\Repository\IRepository $repository
+	 * @param Repository\IRepository $repository
 	 * @param Packages\PackagesManager $manager
 	 */
 	public function __construct(
-		Packages\Repository\IRepository $repository,
+		Repository\IRepository $repository,
 		Packages\PackagesManager $manager
 	) {
 		// Get all installed packages

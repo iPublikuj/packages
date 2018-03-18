@@ -4,7 +4,7 @@
  *
  * @copyright      More in license.md
  * @license        https://www.ipublikuj.eu
- * @author         Adam Kadlec https://www.ipublikuj.eu
+ * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
  * @package        iPublikuj:Packages!
  * @subpackage     common
  * @since          1.0.0
@@ -19,7 +19,6 @@ namespace IPub\Packages;
 use Nette;
 use Nette\Utils;
 
-use IPub\Packages;
 use IPub\Packages\DependencyResolver;
 use IPub\Packages\Entities;
 use IPub\Packages\Exceptions;
@@ -62,7 +61,6 @@ final class PackagesManager implements IPackagesManager
 	private const ACTION_ENABLE = 'enable';
 	private const ACTION_DISABLE = 'disable';
 	private const ACTION_REGISTER = 'register';
-	private const ACTION_UNREGISTER = 'unregister';
 
 	/**
 	 * @var callable[]
@@ -118,11 +116,6 @@ final class PackagesManager implements IPackagesManager
 	 * @var Installers\IInstaller|NULL
 	 */
 	private $installer;
-
-	/**
-	 * @var Nette\DI\Container
-	 */
-	private $container;
 
 	/**
 	 * @var DependencyResolver\Solver
