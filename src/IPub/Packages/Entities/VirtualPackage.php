@@ -23,6 +23,8 @@ namespace IPub\Packages\Entities;
  * @subpackage     Entities
  *
  * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
+ *
+ * @property string $name
  */
 final class VirtualPackage extends Package
 {
