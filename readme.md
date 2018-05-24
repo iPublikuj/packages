@@ -19,7 +19,7 @@ $ composer require ipub/packages
 
 ## Documentation
 
-Learn how to multiple dynamics blocks in your form in [documentation](https://github.com/iPublikuj/packages/blob/master/docs/en/index.md).
+Learn how to manage composer packages & Nette extensions in [documentation](https://github.com/iPublikuj/packages/blob/master/docs/en/index.md).
 
 ***
 Homepage [https://www.ipublikuj.eu](https://www.ipublikuj.eu) and repository [http://github.com/iPublikuj/packages](http://github.com/iPublikuj/packages).
