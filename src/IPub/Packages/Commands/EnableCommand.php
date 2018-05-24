@@ -16,11 +16,13 @@ declare(strict_types = 1);
 
 namespace IPub\Packages\Commands;
 
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input;
 use Symfony\Component\Console\Output;
 
 use IPub\Packages\DependencyResolver;
 use IPub\Packages\Exceptions;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 /**
  * Package enable command
@@ -78,9 +80,12 @@ final class EnableCommand extends Command
 				$output->writeln(sprintf('<info>%s : %s</info>', $job->getAction(), $job->getPackage()->getName()));
 			}
 
-			$dialog = $this->getHelperSet()->get('dialog');
+			/** @var QuestionHelper $dialog */
+			$dialog = $this->getHelperSet()->get('question');
 
-			if (!$dialog->askConfirmation($output, '<question>Continue with this actions? [y/N]</question> ', FALSE)) {
+			$question = new ConfirmationQuestion('Continue with this action? [y/N]', FALSE);
+
+			if (!$dialog->ask($input, $output, $question)) {
 				return;
 			}
 		}

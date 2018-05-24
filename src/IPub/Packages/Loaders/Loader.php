@@ -171,6 +171,9 @@ final class Loader implements ILoader
 
 					$data = curl_exec($ch);
 
+				} elseif (is_array($source)) {
+					$data = $source;
+
 				} else {
 					$data = file_get_contents($source);
 				}
