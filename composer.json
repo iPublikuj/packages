@@ -4,7 +4,7 @@
 	"description"	: "Extension for managing applications packages for Nette Framework.",
 	"keywords"		: ["nette", "packages", "cms", "modular system", "ipub", "ipublikuj"],
 	"homepage"		: "https://github.com/iPublikuj/packages",
-	"license"		: ["BSD-3-Clause", "GPL-2.0", "GPL-3.0"],
+	"license"		: ["GPL-2.0", "GPL-3.0"],
 
 	"authors": [
 		{
@@ -17,6 +17,31 @@
 	"support": {
 		"email"		:"support@ipublikuj.eu",
 		"issues"	:"https://github.com/iPublikuj/packages/issues"
+	},
+
+	"extra": {
+		"ipub"	: {
+			"configuration" : {
+				"extensions" : {
+					"packages" : "IPub\\Packages\\DI\\PackagesExtension"
+				},
+				"packages": {
+					"path" : null,
+					"dirs" : {
+						"configDir" : "%appDir%/config",
+						"vendorDir" : "%appDir%/../vendor",
+						"tempDir" : "%tempDir%"
+					},
+					"configFile" : "config.neon",
+					"loader" : {
+						"packageFiles" : [
+							"package.php"
+						]
+					},
+					"sources" : []
+				}
+			}
+		}
 	},
 
 	"require": {
@@ -41,6 +66,10 @@
 		"tracy/tracy"	: "~2.4",
 
 		"pds/skeleton"	: "~1.0"
+	},
+
+	"suggest": {
+		"ipub/packages-metadata"	: "If you don't wanna care about third party extension metadata."
 	},
 
 	"autoload": {
