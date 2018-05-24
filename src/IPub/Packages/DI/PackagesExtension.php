@@ -1,6 +1,6 @@
 <?php
 /**
- * PackagesExtensions.php
+ * PackagesExtension.php
  *
  * @copyright      More in license.md
  * @license        https://www.ipublikuj.eu
@@ -35,7 +35,7 @@ use IPub\Packages\Repository;
  *
  * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
  */
-final class PackagesExtensions extends DI\CompilerExtension
+final class PackagesExtension extends DI\CompilerExtension
 {
 	/**
 	 * Extension default configuration
@@ -167,7 +167,7 @@ final class PackagesExtensions extends DI\CompilerExtension
 	public static function register(Nette\Configurator $config, string $extensionName = 'packages') : void
 	{
 		$config->onCompile[] = function (Nette\Configurator $config, Nette\DI\Compiler $compiler) use ($extensionName) {
-			$compiler->addExtension($extensionName, new PackagesExtensions());
+			$compiler->addExtension($extensionName, new PackagesExtension());
 		};
 	}
 }
