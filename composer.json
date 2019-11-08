@@ -1,82 +1,95 @@
 {
-	"name"			: "ipub/packages",
-	"type"			: "library",
-	"description"	: "Extension for managing applications packages for Nette Framework.",
-	"keywords"		: ["nette", "packages", "cms", "modular system", "ipub", "ipublikuj"],
-	"homepage"		: "https://github.com/iPublikuj/packages",
-	"license"		: ["GPL-2.0", "GPL-3.0"],
+  "name" : "ipub/packages",
+  "type" : "library",
+  "description" : "Extension for managing applications packages for Nette Framework.",
+  "keywords" : [
+    "nette",
+    "packages",
+    "cms",
+    "modular system",
+    "ipub",
+    "ipublikuj"
+  ],
+  "homepage" : "https://github.com/iPublikuj/packages",
+  "license" : [
+    "GPL-2.0",
+    "GPL-3.0"
+  ],
 
-	"authors": [
-		{
-			"name"		: "iPublikuj:cms",
-			"email"		: "info@ipublikuj.eu",
-			"homepage"	: "https://www.ipublikuj.eu/"
-		}
-	],
+  "authors" : [
+    {
+      "name" : "iPublikuj:cms",
+      "email" : "info@ipublikuj.eu",
+      "homepage" : "https://www.ipublikuj.eu/"
+    }
+  ],
 
-	"support": {
-		"email"		:"support@ipublikuj.eu",
-		"issues"	:"https://github.com/iPublikuj/packages/issues"
-	},
+  "support" : {
+    "email" : "support@ipublikuj.eu",
+    "issues" : "https://github.com/iPublikuj/packages/issues"
+  },
 
-	"extra": {
-		"ipub"	: {
-			"configuration" : {
-				"extensions" : {
-					"packages" : "IPub\\Packages\\DI\\PackagesExtension"
-				},
-				"packages": {
-					"path" : null,
-					"dirs" : {
-						"configDir" : "%appDir%/config",
-						"vendorDir" : "%appDir%/../vendor",
-						"tempDir" : "%tempDir%"
-					},
-					"configFile" : "config.neon",
-					"loader" : {
-						"packageFiles" : [
-							"package.php"
-						]
-					},
-					"sources" : []
-				}
-			}
-		}
-	},
+  "extra" : {
+    "ipub" : {
+      "configuration" : {
+        "extensions" : {
+          "packages" : "IPub\\Packages\\DI\\PackagesExtension"
+        },
+        "packages" : {
+          "path" : null,
+          "dirs" : {
+            "configDir" : "%appDir%/config",
+            "vendorDir" : "%appDir%/../vendor",
+            "tempDir" : "%tempDir%"
+          },
+          "configFile" : "config.neon",
+          "loader" : {
+            "packageFiles" : [
+              "package.php"
+            ]
+          },
+          "sources" : [ ]
+        }
+      }
+    }
+  },
 
-	"require": {
-		"php"	: ">=7.1.0",
+  "require" : {
+    "php" : ">=7.2.0",
 
-		"nette/di"		: "~2.4",
-		"nette/utils"	: "~2.4",
-		"nette/neon"	: "~2.4",
+    "nette/di" : "~2.4 || ~3.0",
+    "nette/utils" : "~2.5 || ~3.0",
+    "nette/neon" : "~2.4 || ~3.0",
 
-		"kdyby/console"	: "~2.7",
+    "kdyby/console" : "~2.7",
 
-		"composer/semver"	: "~1.4"
-	},
+    "composer/semver" : "~1.4"
+  },
 
-	"require-dev": {
-		"nette/bootstrap"		: "~2.4",
-		"nette/mail"			: "~2.4",
-		"nette/robot-loader"	: "~2.4",
-		"nette/safe-stream"		: "~2.3",
-		"nette/tester"			: "~2.0",
+  "require-dev" : {
+    "nette/bootstrap" : "~2.4 || ~3.0",
+    "nette/mail" : "~2.4 || ~3.0",
+    "nette/robot-loader" : "~2.4 || ~3.0",
+    "nette/safe-stream" : "~2.3",
+    "nette/tester" : "~2.3",
 
-		"tracy/tracy"	: "~2.4",
+    "tracy/tracy" : "~2.4",
 
-		"pds/skeleton"	: "~1.0"
-	},
+    "pds/skeleton" : "~1.0"
+  },
 
-	"suggest": {
-		"ipub/packages-metadata"	: "If you don't wanna care about third party extension metadata."
-	},
+  "suggest" : {
+    "ipub/packages-metadata" : "If you don't wanna care about third party extension metadata."
+  },
 
-	"autoload": {
-		"psr-0": {
-			"IPub\\Packages\\": "src/"
-		}
-	},
+  "autoload" : {
+    "psr-0" : {
+      "IPub\\Packages\\" : "src/"
+    }
+  },
 
-	"bin": ["bin/packages-manager", "bin/packages-manager.php"]
+  "bin" : [
+    "bin/packages-manager",
+    "bin/packages-manager.php"
+  ]
 }

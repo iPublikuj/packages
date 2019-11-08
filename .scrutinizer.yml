@@ -4,7 +4,9 @@ checks:
 build:
     environment:
         php:
-            version: 7.1.0
+            version: 7.2
+        variables:
+            NETTE: default
 
     dependencies:
         before:
