@@ -19,8 +19,6 @@ namespace IPub\Packages\DI;
 use Nette;
 use Nette\DI;
 
-use Kdyby\Console;
-
 use IPub\Packages;
 use IPub\Packages\Commands;
 use IPub\Packages\Helpers;
@@ -65,8 +63,12 @@ final class PackagesExtension extends DI\CompilerExtension
 	{
 		// Get container builder
 		$builder = $this->getContainerBuilder();
+
+		// Merge extension default config
+		$this->setConfig(DI\Config\Helpers::merge($this->config, DI\Helpers::expand($this->defaults, $builder->parameters)));
+
 		// Get extension configuration
-		$configuration = $this->getConfig($this->defaults);
+		$configuration = $this->getConfig();
 
 		/**
 		 * Load packages configuration
@@ -135,8 +137,7 @@ final class PackagesExtension extends DI\CompilerExtension
 
 		foreach ($commands as $name => $cmd) {
 			$builder->addDefinition($this->prefix('commands' . lcfirst($name)))
-				->setType($cmd)
-				->addTag(Console\DI\ConsoleExtension::TAG_COMMAND);
+				->setType($cmd);
 		}
 	}
 
