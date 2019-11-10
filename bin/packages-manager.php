@@ -14,6 +14,8 @@
 
 declare(strict_types = 1);
 
+use Contributte\Console;
+
 $rootDir = getcwd();
 $libsDir = $rootDir . DIRECTORY_SEPARATOR . 'vendor';
 $wwwDir = $rootDir . DIRECTORY_SEPARATOR . 'www';
@@ -59,4 +61,4 @@ $configurator->addConfig(dirname(__DIR__) . DIRECTORY_SEPARATOR . 'config' . DIR
 
 $container = $configurator->createContainer();
 
-$container->getService('application')->run();
+exit($container->getByType(Console\Application::class)->run());
