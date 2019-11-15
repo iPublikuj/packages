@@ -299,7 +299,7 @@ abstract class Package implements IPackage
 	public function compare(IPackage $package, string $operator = '==') : bool
 	{
 		return strtolower($this->getName()) === strtolower($package->getName()) &&
-		version_compare(strtolower($this->getVersion()), strtolower($package->getVersion()), $operator);
+			version_compare(strtolower($this->getVersion()), strtolower($package->getVersion()), $operator);
 	}
 
 	/**

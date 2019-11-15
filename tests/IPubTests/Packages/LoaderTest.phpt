@@ -1,6 +1,7 @@
 <?php
 /**
  * Test: IPub\Packages\Loader
+ *
  * @testCase
  *
  * @copyright      More in license.md
