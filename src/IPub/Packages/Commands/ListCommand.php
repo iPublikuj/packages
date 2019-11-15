@@ -70,7 +70,7 @@ final class ListCommand extends Command
 
 			foreach ($packages as $package) {
 				$output->writeln(sprintf(
-					'<info>%'. $maxLength .'s</info> | status: <comment>%-12s</comment> | version: <comment>%s</comment>',
+					'<info>%' . $maxLength . 's</info> | status: <comment>%-12s</comment> | version: <comment>%s</comment>',
 					$package->getName(),
 					$this->packageManager->getStatus($package),
 					$this->packageManager->getVersion($package)

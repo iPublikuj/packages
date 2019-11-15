@@ -77,8 +77,12 @@ final class Loader implements ILoader
 	 * @param $vendorDir
 	 * @param DI\Container $container
 	 */
-	public function __construct(array $packageFiles = [], array $metadataSources = [], $vendorDir, DI\Container $container)
-	{
+	public function __construct(
+		array $packageFiles = [],
+		array $metadataSources = [],
+		$vendorDir,
+		DI\Container $container
+	) {
 		$this->packageFiles = $packageFiles;
 		$this->metadataSources = $metadataSources;
 		$this->vendorDir = $vendorDir;
@@ -112,7 +116,7 @@ final class Loader implements ILoader
 			$data = Utils\Arrays::mergeTree($data, [
 				'extra' => [
 					'ipub' => $metadata,
-				]
+				],
 			]);
 		}
 

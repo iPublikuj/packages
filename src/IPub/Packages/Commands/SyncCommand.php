@@ -71,13 +71,13 @@ class SyncCommand extends Command
 					$output->writeln(sprintf('<info>%s : %s</info>', $action, $name));
 				}
 			}
-/*
-			foreach ($this->packageManager->disableAbsent() as $item) {
-				foreach ($item as $name => $action) {
-					$output->writeln(sprintf('<info>%s : %s</info>', $action, $name));
-				}
-			}
-*/
+			/*
+						foreach ($this->packageManager->disableAbsent() as $item) {
+							foreach ($item as $name => $action) {
+								$output->writeln(sprintf('<info>%s : %s</info>', $action, $name));
+							}
+						}
+			*/
 		} catch (Exceptions\InvalidArgumentException $e) {
 			$output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
 		}

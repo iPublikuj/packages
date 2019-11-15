@@ -21,6 +21,7 @@ use Nette\DI;
 
 use IPub\Packages;
 use IPub\Packages\Commands;
+use IPub\Packages\Events;
 use IPub\Packages\Helpers;
 use IPub\Packages\Loaders;
 use IPub\Packages\Repository;
@@ -41,19 +42,20 @@ final class PackagesExtension extends DI\CompilerExtension
 	 * @var array
 	 */
 	private $defaults = [
-		'path'       => NULL,                        // Paths where to search for packages
-		'dirs'       => [                            // Define path to folders
+		'path'          => NULL,                        // Paths where to search for packages
+		'dirs'          => [                            // Define path to folders
 			'configDir' => '%appDir%/config',        // Path where is stored app configuration
 			'vendorDir' => '%appDir%/../vendor',     // Path to composer vendor folder
 			'tempDir'   => '%tempDir%',              // Path to temporary folder
 		],
-		'configFile' => 'config.neon',               // Filename with enabled packages extensions
-		'loader'     => [
+		'configFile'    => 'config.neon',               // Filename with enabled packages extensions
+		'loader'        => [
 			'packageFiles' => [
 				'package.php',
 			],
 		],
-		'sources'    => [],
+		'sources'       => [],
+		'symfonyEvents' => FALSE,
 	];
 
 	/**
@@ -63,12 +65,12 @@ final class PackagesExtension extends DI\CompilerExtension
 	{
 		// Get container builder
 		$builder = $this->getContainerBuilder();
-
-		// Merge extension default config
-		$this->setConfig(DI\Config\Helpers::merge($this->config, DI\Helpers::expand($this->defaults, $builder->parameters)));
-
-		// Get extension configuration
-		$configuration = $this->getConfig();
+		/** @var array $configuration */
+		if (method_exists($this, 'validateConfig')) {
+			$configuration = $this->validateConfig($this->defaults);
+		} else {
+			$configuration = $this->getConfig($this->defaults);
+		}
 
 		/**
 		 * Load packages configuration
@@ -150,12 +152,61 @@ final class PackagesExtension extends DI\CompilerExtension
 
 		// Get container builder
 		$builder = $this->getContainerBuilder();
+		/** @var array $configuration */
+		if (method_exists($this, 'validateConfig')) {
+			$configuration = $this->validateConfig($this->defaults);
+		} else {
+			$configuration = $this->getConfig($this->defaults);
+		}
 
 		// Get packages manager
 		$manager = $builder->getDefinition($this->prefix('manager'));
 
 		foreach ($builder->findByType(Packages\Scripts\IScript::class) as $serviceDefinition) {
 			$manager->addSetup('addScript', [$serviceDefinition->getType(), $serviceDefinition]);
+		}
+
+		if ($configuration['symfonyEvents'] === TRUE) {
+			$dispatcher = $builder->getDefinition($builder->getByType(EventDispatcher\EventDispatcherInterface::class));
+
+			$packagesManager = $builder->getDefinition($builder->getByType(Packages\PackagesManager::class));
+			assert($packagesManager instanceof DI\ServiceDefinition);
+
+			$packagesManager->addSetup('?->onEnable[] = function() {?->dispatch(new ?(...func_get_args()));}', [
+				'@self',
+				$dispatcher,
+				new Nette\PhpGenerator\PhpLiteral(Events\EnableEvent::class),
+			]);
+			$packagesManager->addSetup('?->onDisable[] = function() {?->dispatch(new ?(...func_get_args()));}', [
+				'@self',
+				$dispatcher,
+				new Nette\PhpGenerator\PhpLiteral(Events\DisableEvent::class),
+			]);
+			$packagesManager->addSetup('?->onUpgrade[] = function() {?->dispatch(new ?(...func_get_args()));}', [
+				'@self',
+				$dispatcher,
+				new Nette\PhpGenerator\PhpLiteral(Events\UpgradeEvent::class),
+			]);
+			$packagesManager->addSetup('?->onInstall[] = function() {?->dispatch(new ?(...func_get_args()));}', [
+				'@self',
+				$dispatcher,
+				new Nette\PhpGenerator\PhpLiteral(Events\InstallEvent::class),
+			]);
+			$packagesManager->addSetup('?->onUninstall[] = function() {?->dispatch(new ?(...func_get_args()));}', [
+				'@self',
+				$dispatcher,
+				new Nette\PhpGenerator\PhpLiteral(Events\UninstallEvent::class),
+			]);
+			$packagesManager->addSetup('?->onRegister[] = function() {?->dispatch(new ?(...func_get_args()));}', [
+				'@self',
+				$dispatcher,
+				new Nette\PhpGenerator\PhpLiteral(Events\RegisterEvent::class),
+			]);
+			$packagesManager->addSetup('?->onUnregister[] = function() {?->dispatch(new ?(...func_get_args()));}', [
+				'@self',
+				$dispatcher,
+				new Nette\PhpGenerator\PhpLiteral(Events\UnregisterEvent::class),
+			]);
 		}
 	}
 

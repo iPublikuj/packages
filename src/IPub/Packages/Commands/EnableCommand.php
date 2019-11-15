@@ -50,7 +50,7 @@ final class EnableCommand extends Command
 	/**
 	 * @param Input\InputInterface $input
 	 * @param Output\OutputInterface $output
-	 * 
+	 *
 	 * @return void
 	 */
 	protected function execute(Input\InputInterface $input, Output\OutputInterface $output) : void

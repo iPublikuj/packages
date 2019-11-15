@@ -1,6 +1,7 @@
 <?php
 /**
  * Test: IPub\Packages\Repository
+ *
  * @testCase
  *
  * @copyright      More in license.md
@@ -43,7 +44,7 @@ class RepositoryTest extends Tester\TestCase
 		/** @var Packages\Repository\IRepository $repository */
 		$repository = $dic->getService('packages.repository');
 
-		$repository->addPath(__DIR__ .'/../../../../../');
+		$repository->addPath(__DIR__ . '/../../../../../');
 
 		$package = $repository->findPackage('ipub/packages');
 
